@@ -1,5 +1,5 @@
 # Name of the blog
-blog_name = 'blog.ivandemarino.me'
+blog_name = 'blog.ivandemarino'
 
 # Your name (used for copyright info)
 author_name = 'Ivan De Marino'
@@ -45,13 +45,13 @@ html_mime_type = "text/html; charset=utf-8"
 
 # To use disqus for comments, set this to the 'short name' of the disqus forum
 # created for the purpose.
-disqus_forum = None
+disqus_forum = "blogivandemarinome"
 
 # Length (in words) of summaries, by default
 summary_length = 200
 
 # If you want to use Google Analytics, enter your 'web property id' here
-analytics_id = None
+analytics_id = "UA-136869-8"
 
 # If you want to use PubSubHubbub, supply the hub URL to use here.
 hubbub_hub_url = 'http://pubsubhubbub.appspot.com/'
@@ -65,7 +65,7 @@ google_sitemap_ping = True
 # an html file' method, then set the NAME of the file below.
 # Note that you do not need to download the file provided - just enter its name
 # here.
-google_site_verification = None
+google_site_verification = "googledb30cb13b3e7812d.html"
 
 # Default markup language for entry bodies (defaults to html).
 default_markup = 'html'
@@ -82,7 +82,7 @@ url_prefix = ''
 
 # Defines where the user is defined in the rel="me" of your pages.
 # This allows you to expand on your social graph.
-rel_me = None
+rel_me = "me personal blog"
 
 # For use a feed proxy like feedburne.google.com
 feed_proxy = None
