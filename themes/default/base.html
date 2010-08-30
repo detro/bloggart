@@ -53,7 +53,45 @@
 		<div id="main" class="grid_12">
       {% block body %}{% endblock %}
 		</div>
+		
 		<div id="left-columns" class="grid_4">
+		    
+		    <!-- Twitter Widget -->
+            <div class="sidemenu">
+                <h3>Twitterstream</h3>
+                <script src="http://widgets.twimg.com/j/2/widget.js"></script>
+                <script>
+                new TWTR.Widget({
+                  version: 2,
+                  type: 'profile',
+                  rpp: 4,
+                  interval: 6000,
+                  width: 'auto',
+                  height: 300,
+                  theme: {
+                    shell: {
+                      background: '#f2f1f0',
+                      color: '#666666'
+                    },
+                    tweets: {
+                      background: '#ffffff',
+                      color: '#000000',
+                      links: '#ae855c'
+                    }
+                  },
+                  features: {
+                    scrollbar: true,
+                    loop: false,
+                    live: true,
+                    hashtags: true,
+                    timestamp: true,
+                    avatars: false,
+                    behavior: 'all'
+                  }
+                }).render().setUser('detronizator').start();
+                </script>
+            </div>
+		    
       {% for sidebar in config.sidebars %}
         <div class="sidemenu">
           <h3>{{sidebar.0}}</h3>
@@ -64,6 +102,7 @@
           </ul>
         </div>
       {% endfor %}
+
 
      {% if config.google_friends_id and config.google_friends_members %}
         <div class="sidemenu">
@@ -93,7 +132,6 @@
           </script>
         </div>
       {% endif %}
-
 
 
 

@@ -1,14 +1,14 @@
 # Name of the blog
-blog_name = 'My Blog'
+blog_name = 'blog.ivandemarino.me'
 
 # Your name (used for copyright info)
-author_name = 'the author'
+author_name = 'Ivan De Marino'
 
 # (Optional) slogan
-slogan = 'This is my blog'
+slogan = 'Considering yourself Perfectible, makes you Perfect'
 
 # The hostname this site will primarially serve off (used for Atom feeds)
-host = 'localhost:8080'
+host = 'blog.ivandemarino.me'
 
 # Selects the theme to use. Theme names correspond to directories under
 # the 'themes' directory, containing templates and static content.
@@ -19,19 +19,22 @@ theme = 'default'
 #   year - the year the post was published in
 #   month - the month the post was published in
 #   day - the day the post was published in
-post_path_format = '/%(year)d/%(month)02d/%(slug)s'
+post_path_format = '/%(year)d/%(month)02d/%(day)02d/%(slug)s'
 
 # A nested list of sidebar menus, for convenience. If this isn't versatile
 # enough, you can edit themes/default/base.html instead.
 sidebars = [
-  ('Blogroll', [
-    '<a href="http://blog.notdot.net/">Nick Johnsonz</a>',
-    '<a href="http://www.billkatz.com/">Bill Katz</a>',
-    '<a href="http://www.codinghorror.com/blog/">Coding Horror</a>',
-    '<a href="http://craphound.com/">Craphound</a>',
-    '<a href="http://www.neopythonic.blogspot.com/">Neopythonic</a>',
-    '<a href="http://www.schneier.com/blog/">Schneier on Security</a>',
-  ]),
+   ('Otherwhere else', [
+      '<a href="http://twitter.com/detronizator" target="_blank">Me @Twitter</a>',
+      '<a href="http://www.facebook.com/detronizator" target="_blank">Me @Facebook</a>',
+      '<a href="http://www.google.com/profiles/detronizator" target="_blank">Me @Google</a>',
+      '<a href="http://www.anobii.com/detronizator" target="_blank">Me @Anobii</a>',
+      '<a href="http://github.com/detro" target="_blank">Me @Github</a>',
+      '<a href="http://www.linkedin.com/in/ivandemarino" target="_blank">Me @LinkedIn</a>',
+   ]),
+   ('Links', [
+      '<a href="http://github.com/Arachnid/bloggart" target="_blank">Bloggart (Engine for this Blog)</a>',
+   ]),
 ]
 
 # Number of entries per page in indexes.
@@ -93,4 +96,4 @@ google_friends_members  = True # For a members container.
 
 # To format the date of your post.
 # http://docs.djangoproject.com/en/1.1/ref/templates/builtins/#now
-date_format = "d F, Y"
+date_format = "D d F Y"
