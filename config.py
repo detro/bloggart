@@ -1,5 +1,5 @@
 # Name of the blog
-blog_name = 'blog.ivandemarino'
+blog_name = 'blog. Ivan De Marino .me'
 
 # Your name (used for copyright info)
 author_name = 'Ivan De Marino'
