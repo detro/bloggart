@@ -1,11 +1,11 @@
 # Name of the blog
-blog_name = 'blog. Ivan De Marino .me'
+blog_name = 'blog. Ivan De Marino'
 
 # Your name (used for copyright info)
 author_name = 'Ivan De Marino'
 
 # (Optional) slogan
-slogan = 'Considering yourself Perfectible, makes you Perfect'
+slogan = '&laquo;Considering yourself Perfectible, makes you Perfect&raquo;'
 
 # The hostname this site will primarially serve off (used for Atom feeds)
 host = 'blog.ivandemarino.me'
@@ -24,15 +24,16 @@ post_path_format = '/%(year)d/%(month)02d/%(day)02d/%(slug)s'
 # A nested list of sidebar menus, for convenience. If this isn't versatile
 # enough, you can edit themes/default/base.html instead.
 sidebars = [
-   ('Otherwhere else', [
+   ('Otherwhere', [
       '<a href="http://twitter.com/detronizator" target="_blank">Me @Twitter</a>',
       '<a href="http://www.facebook.com/detronizator" target="_blank">Me @Facebook</a>',
       '<a href="http://www.google.com/profiles/detronizator" target="_blank">Me @Google</a>',
       '<a href="http://www.anobii.com/detronizator" target="_blank">Me @Anobii</a>',
       '<a href="http://github.com/detro" target="_blank">Me @Github</a>',
       '<a href="http://www.linkedin.com/in/ivandemarino" target="_blank">Me @LinkedIn</a>',
+      '<a href="http://www.detronizator.org/" target="_blank">Me @old blog</a>',
    ]),
-   ('Links', [
+   ('Blogroll', [
       '<a href="http://github.com/Arachnid/bloggart" target="_blank">Bloggart (Engine for this Blog)</a>',
    ]),
 ]
