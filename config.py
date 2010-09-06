@@ -85,8 +85,8 @@ url_prefix = ''
 # This allows you to expand on your social graph.
 rel_me = "me personal blog"
 
-# For use a feed proxy like feedburne.google.com
-feed_proxy = None
+# For use a feed proxy like feedburner.google.com
+feed_proxy = "http://feeds.feedburner.com/BlogIvanDeMarino"
 
 # To use Google Friends Connect.                                          
 # If you want use Google Friends Connect, go to http://www.google.com/friendconnect/ 
