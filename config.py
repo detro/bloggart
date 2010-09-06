@@ -5,7 +5,7 @@ blog_name = 'blog. Ivan De Marino'
 author_name = 'Ivan De Marino'
 
 # (Optional) slogan
-slogan = '&laquo;Considering yourself Perfectible, makes you Perfect&raquo;'
+slogan = 'Converting caffeine into Code, most of the time...'
 
 # The hostname this site will primarially serve off (used for Atom feeds)
 host = 'blog.ivandemarino.me'
