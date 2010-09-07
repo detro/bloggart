@@ -31,7 +31,6 @@ sidebars = [
       '<a href="http://www.anobii.com/detronizator" target="_blank">Me @Anobii</a>',
       '<a href="http://github.com/detro" target="_blank">Me @Github</a>',
       '<a href="http://www.linkedin.com/in/ivandemarino" target="_blank">Me @LinkedIn</a>',
-      '<a href="http://www.detronizator.org/" target="_blank">Me @old blog</a>',
    ]),
    ('Blogroll', [
       '<a href="http://github.com/Arachnid/bloggart" target="_blank">Bloggart (Engine for this Blog)</a>',
