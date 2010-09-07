@@ -20,7 +20,6 @@ import pygments.lexers
 import pygments.formatters
 import pygments.util
 
-
 def disqus_request(method, request_type=urlfetch.GET, **kwargs):
   kwargs['api_version'] = '1.1'
   if request_type == urlfetch.GET:

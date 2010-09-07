@@ -1,1 +1,4 @@
+User-agent: *
+Allow: /
+
 Sitemap: http://{{config.host}}{{config.url_prefix}}/sitemap.xml
