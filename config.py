@@ -21,20 +21,61 @@ theme = 'default'
 #   day - the day the post was published in
 post_path_format = '/%(year)d/%(month)02d/%(day)02d/%(slug)s'
 
-# A nested list of sidebar menus, for convenience. If this isn't versatile
-# enough, you can edit themes/default/base.html instead.
-sidebars = [
-   ('Otherwhere', [
-      '<a href="http://twitter.com/detronizator" target="_blank">Me @Twitter</a>',
-      '<a href="http://www.facebook.com/detronizator" target="_blank">Me @Facebook</a>',
-      '<a href="http://www.google.com/profiles/detronizator" target="_blank">Me @Google</a>',
-      '<a href="http://www.anobii.com/detronizator" target="_blank">Me @Anobii</a>',
-      '<a href="http://github.com/detro" target="_blank">Me @Github</a>',
-      '<a href="http://www.linkedin.com/in/ivandemarino" target="_blank">Me @LinkedIn</a>',
-   ]),
-   ('Blogroll', [
-      '<a href="http://github.com/Arachnid/bloggart" target="_blank">Bloggart (Engine for this Blog)</a>',
-   ]),
+# Sidebar configuration.
+# It is a sequence of DIV Blocks with various types of content supported.
+# The format is an array of Dictionary like:
+#  [
+#     {
+#        'enabled'   : True (absent or set to False will make the Section disappear)   ,
+#        'type'      : 'links' (just a set of links)
+#                       or 'gfc' (Google Friends Connect Widget)
+#                       or 'twitter' (Twitter Widget)
+#                       or 'code' (Generic HTML Code Block: stuff like Ads or Licenses),
+#        'title'     : Title to give to this Section in the Sidebar                    ,
+#        TYPE-SPECIFIC key-values (see examples below)                                 ,
+#     },
+#     ...
+#  ]
+# More can be supported easily, tweaking the theme. Or just using the block of type 'code'.
+sidebar_blocks = [
+   # Block of Links
+   {
+      'enabled'   : True,
+      'type'      : 'links',     
+      'title'     : 'Blogroll',
+      'links'     : [
+         { 'title' : 'Nick Johnsonz', 'url' : 'http://blog.notdot.net/', 'external' : True, 'rel' : 'bookmark' },
+         { 'title' : 'Bill Katz', 'url' : 'http://www.billkatz.com/', 'external' : True, 'rel' : 'bookmark' },
+         { 'title' : 'Coding Horror', 'url' : 'http://www.codinghorror.com/blog/', 'external' : True, 'rel' : 'bookmark' },
+         { 'title' : 'Craphound', 'url' : 'http://craphound.com/', 'external' : True, 'rel' : 'bookmark' },
+         { 'title' : 'Neopythonic', 'url' : 'http://www.neopythonic.blogspot.com/', 'external' : True, 'rel' : 'bookmark' },
+         { 'title' : 'Schneier on Security', 'url' : 'http://www.schneier.com/blog/', 'external' : True, 'rel' : 'bookmark' },
+      ]
+   },
+   # Google Friends Connect Widget
+   {
+      'enabled'   : False,
+      'type'      : 'gfc',                   
+      'title'     : 'Members',
+      'id'        : None,              # Google Friends Connect ID
+      'nrows'     : 4                  # Number of Rows in the Widget
+   },
+   # Twitter Widget
+   {
+      'enabled'   : True,
+      'type'      : 'twitter',
+      'title'     : 'Twitter',
+      'username'  : 'nicksdjohnson',   # Twitter Username
+      'ntweets'   : 5,                 # Number of Tweets to Show
+      'height'    : 500                # Widget Height (='ntweets * 100' is adviced)
+   },
+   # An HTML Code Block (this license one is a good example)
+   {
+      'enabled'   : True,
+      'type'      : 'code',
+      'title'     : 'License',
+      'path'      : '../../custom_blocks/license.html',   # Path to any custom HTML Code that you want to include
+   },
 ]
 
 # Number of entries per page in indexes.
@@ -86,13 +127,6 @@ rel_me = "me personal blog"
 
 # For use a feed proxy like feedburner.google.com
 feed_proxy = "http://feeds.feedburner.com/BlogIvanDeMarino"
-
-# To use Google Friends Connect.                                          
-# If you want use Google Friends Connect, go to http://www.google.com/friendconnect/ 
-# and register your domain for get a Google Friends connect ID.
-google_friends_id = None
-google_friends_comments = True # For comments.
-google_friends_members  = True # For a members container.
 
 # To format the date of your post.
 # http://docs.djangoproject.com/en/1.1/ref/templates/builtins/#now

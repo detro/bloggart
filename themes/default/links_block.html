@@ -1,0 +1,9 @@
+<ul>
+    {% for link in block.links %}
+    <li>
+        <a rel="{{ link.rel }}{% if link.external %} external{% endif %}"
+            target="{% if link.external %}_blank{% else %}_self{% endif %}"
+            href="{{ link.url }}">{{ link.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
