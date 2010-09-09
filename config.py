@@ -38,18 +38,47 @@ post_path_format = '/%(year)d/%(month)02d/%(day)02d/%(slug)s'
 #  ]
 # More can be supported easily, tweaking the theme. Or just using the block of type 'code'.
 sidebar_blocks = [
-   # Block of Links
+   # Twitter Widget
+   {
+      'enabled'   : True,
+      'type'      : 'twitter',
+      'title'     : 'Twitter stream',
+      'username'  : 'detronizator',    # Twitter Username
+      'ntweets'   : 5,                 # Number of Tweets to Show
+      'height'    : 500                # Widget Height (='ntweets * 100' is adviced)
+   },
+   # Block of Links: Working on
    {
       'enabled'   : True,
       'type'      : 'links',     
-      'title'     : 'Blogroll',
+      'title'     : 'Working on',
       'links'     : [
-         { 'title' : 'Nick Johnsonz', 'url' : 'http://blog.notdot.net/', 'external' : True, 'rel' : 'bookmark' },
-         { 'title' : 'Bill Katz', 'url' : 'http://www.billkatz.com/', 'external' : True, 'rel' : 'bookmark' },
-         { 'title' : 'Coding Horror', 'url' : 'http://www.codinghorror.com/blog/', 'external' : True, 'rel' : 'bookmark' },
-         { 'title' : 'Craphound', 'url' : 'http://craphound.com/', 'external' : True, 'rel' : 'bookmark' },
-         { 'title' : 'Neopythonic', 'url' : 'http://www.neopythonic.blogspot.com/', 'external' : True, 'rel' : 'bookmark' },
-         { 'title' : 'Schneier on Security', 'url' : 'http://www.schneier.com/blog/', 'external' : True, 'rel' : 'bookmark' },
+         { 'title' : 'txty.mobi', 'url' : 'http://www.txty.mobi', 'external' : True, 'rel' : 'bookmark author' },
+      ]
+   },
+   # Block of Links: Me elsewhere
+   {
+      'enabled'   : True,
+      'type'      : 'links',     
+      'title'     : 'Me elsewhere',
+      'links'     : [
+         { 'title' : '@Github', 'url' : 'http://github.com/detro', 'external' : True, 'rel' : 'bookmark author me' },
+         { 'title' : '@LinkedIn', 'url' : 'http://www.linkedin.com/in/ivandemarino', 'external' : True, 'rel' : 'bookmark author me' },
+         { 'title' : '@Twitter', 'url' : 'http://twitter.com/detronizator', 'external' : True, 'rel' : 'bookmark author me' },
+         { 'title' : '@Facebook', 'url' : 'http://www.facebook.com/detronizator', 'external' : True, 'rel' : 'bookmark author me' },
+         { 'title' : '@Google', 'url' : 'http://www.google.com/profiles/detronizator', 'external' : True, 'rel' : 'bookmark author me' },
+         { 'title' : '@Anoobi', 'url' : 'http://www.anobii.com/detronizator', 'external' : True, 'rel' : 'bookmark author me' },
+      ]
+   },
+   # Block of Links: Code
+   {
+      'enabled'   : True,
+      'type'      : 'links',     
+      'title'     : 'My code',
+      'links'     : [
+         { 'title' : 'My Bloggart\'s branch', 'url' : 'http://github.com/detro/bloggart', 'external' : True, 'rel' : 'bookmark author me' },
+         { 'title' : 'qtoolbox', 'url' : 'http://github.com/detro/qtoolbox', 'external' : True, 'rel' : 'bookmark author me' },
+         { 'title' : 'coding exercises', 'url' : 'http://github.com/detro/coding-exercises', 'external' : True, 'rel' : 'bookmark author me' },
       ]
    },
    # Google Friends Connect Widget
@@ -60,14 +89,12 @@ sidebar_blocks = [
       'id'        : None,              # Google Friends Connect ID
       'nrows'     : 4                  # Number of Rows in the Widget
    },
-   # Twitter Widget
+   # Google Ads
    {
       'enabled'   : True,
-      'type'      : 'twitter',
-      'title'     : 'Twitter',
-      'username'  : 'nicksdjohnson',   # Twitter Username
-      'ntweets'   : 5,                 # Number of Tweets to Show
-      'height'    : 500                # Widget Height (='ntweets * 100' is adviced)
+      'type'      : 'code',
+      'title'     : 'Ads',
+      'path'      : '../../custom_blocks/google_ads.html',   # Path to any custom HTML Code that you want to include
    },
    # An HTML Code Block (this license one is a good example)
    {
@@ -79,7 +106,7 @@ sidebar_blocks = [
 ]
 
 # Number of entries per page in indexes.
-posts_per_page = 10
+posts_per_page = 5
 
 # The mime type to serve HTML files as.
 html_mime_type = "text/html; charset=utf-8"
