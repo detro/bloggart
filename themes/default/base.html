@@ -15,14 +15,19 @@
 	        {{config.url_prefix}}/feeds/atom.xml
 	      {% endif %}" />
   <link rel="SHORTCUT ICON" href="{{config.url_prefix}}/static/{{config.theme}}/favicon.ico"/>
+  <link rel="SHORTCUT ICON" href="{{config.url_prefix}}/favicon.ico"/>
   {% if config.rel_me %}
   <link rel="me" href="{{config.rel_me}}" />
   {% endif %}
 
-  {% if config.google_friends_id %}
+  {% for block in config.sidebar_blocks %}
+  {% ifequal block.type 'gfc' %}
+  {% if block.enabled %}
   <!-- Include the Google Friend Connect javascript library. -->
-  <script type="text/javascript" src="http://www.google.com/friendconnect/script/friendconnect.js"></script>
+  <script type="text/javascript" src="http://www.google.com/friendconnect/script/friendconnect.js"></script>  
   {% endif %}
+  {% endifequal %}
+  {% endfor %}
 
   {% block head %}{% endblock %}
 </head>
@@ -34,6 +39,7 @@
 		<div  id="nav">
 			<ul>
 				<li{% ifequal generator_class "IndexContentGenerator" %} id="current"{% endifequal %}><a href="{{config.url_prefix}}/">Home</a></li>
+				<li{% ifequal generator_class "ArchiveIndexContentGenerator" %} id="current"{% else %}{% ifequal generator_class "ArchivePageContentGenerator" %} id="current"{% endifequal %}{% endifequal %}><a href="{{config.url_prefix}}/archive/">Archive</a></li>
         {% block menu %}{% endblock %}
 			</ul>
 		</div>		

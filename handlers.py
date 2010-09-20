@@ -49,6 +49,7 @@ class BaseHandler(webapp.RequestHandler):
     template_vals.update({
         'path': self.request.path,
         'handler_class': self.__class__.__name__,
+        'is_admin': True,
     })
     template_name = os.path.join("admin", template_name)
     self.response.out.write(utils.render_template(template_name, template_vals,
@@ -57,17 +58,18 @@ class BaseHandler(webapp.RequestHandler):
 
 class AdminHandler(BaseHandler):
   def get(self):
+    from generators import generator_list
     offset = int(self.request.get('start', 0))
     count = int(self.request.get('count', 20))
     posts = models.BlogPost.all().order('-published').fetch(count, offset)
     template_vals = {
-        'is_admin': True,
         'offset': offset,
         'count': count,
         'last_post': offset + len(posts) - 1,
         'prev_offset': max(0, offset - count),
         'next_offset': offset + count,
         'posts': posts,
+        'generators': [cls.__name__ for cls in generator_list],
     }
     self.render_to_response("index.html", template_vals)
 
@@ -96,9 +98,9 @@ class PostHandler(BaseHandler):
         post.put()
       else:
         if not post.path: # Publish post
-          post.updated = post.published = datetime.datetime.now()
+          post.updated = post.published = datetime.datetime.now(utils.tzinfo())
         else:# Edit post
-          post.updated = datetime.datetime.now()
+          post.updated = datetime.datetime.now(utils.tzinfo())
         post.publish()
       self.render_to_response("published.html", {
           'post': post,
@@ -123,13 +125,16 @@ class PreviewHandler(BaseHandler):
     # datetime.max. Django's date filter has a problem with
     # datetime.max and a "real" date looks better.
     if post.published == datetime.datetime.max:
-      post.published = datetime.datetime.now()
-    self.response.out.write(utils.render_template('post.html',
-                                                  {'post': post}))
+      post.published = datetime.datetime.now(utils.tzinfo())
+    self.response.out.write(utils.render_template('post.html', {
+        'post': post,
+        'is_admin': True}))
 
 class RegenerateHandler(BaseHandler):
   def post(self):
+    generators = self.request.get_all("generators")
+
     regen = post_deploy.PostRegenerator()
-    deferred.defer(regen.regenerate)
-    deferred.defer(post_deploy.post_deploy, post_deploy.BLOGGART_VERSION)
+    deferred.defer(regen.regenerate, classes=generators)
+    deferred.defer(post_deploy.try_post_deploy, force=True)
     self.render_to_response("regenerating.html")

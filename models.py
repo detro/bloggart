@@ -1,4 +1,5 @@
 import aetycoon
+import datetime
 import hashlib
 import re
 from google.appengine.ext import db
@@ -17,6 +18,29 @@ else:
   DEFAULT_MARKUP = 'html'
 
 
+class BlogDate(db.Model):
+  """Contains a list of year-months for published blog posts."""
+
+  @classmethod
+  def get_key_name(cls, post):
+    return '%d/%02d' % (post.published_tz.year, post.published_tz.month)
+
+  @classmethod
+  def create_for_post(cls, post):
+    inst = BlogDate(key_name=BlogDate.get_key_name(post))
+    inst.put()
+    return inst
+
+  @classmethod
+  def datetime_from_key_name(cls, key_name):
+    year, month = key_name.split("/")
+    return datetime.datetime(int(year), int(month), 1, tzinfo=utils.tzinfo())
+
+  @property
+  def date(self):
+    return BlogDate.datetime_from_key_name(self.key().name()).date()
+
+
 class BlogPost(db.Model):
   # The URL path to the blog post. Posts have a path iff they are published.
   path = db.StringProperty()
@@ -29,6 +53,14 @@ class BlogPost(db.Model):
   updated = db.DateTimeProperty(auto_now=False)
   deps = aetycoon.PickleProperty()
 
+  @property
+  def published_tz(self):
+    return utils.tz_field(self.published)
+
+  @property
+  def updated_tz(self):
+    return utils.tz_field(self.updated)
+
   @aetycoon.TransformProperty(tags)
   def normalized_tags(tags):
     return list(set(utils.slugify(x.lower()) for x in tags))
@@ -38,25 +70,29 @@ class BlogPost(db.Model):
     return [(x, utils.slugify(x.lower())) for x in self.tags]
 
   @property
+  @utils.body_memoizer
   def rendered(self):
     """Returns the rendered body."""
     return markup.render_body(self)
 
   @property
+  @utils.summary_memoizer
   def summary(self):
     """Returns a summary of the blog post."""
     return markup.render_summary(self)
 
   @property
+  @utils.hash_memoizer
   def hash(self):
     val = (self.title, self.body, self.published)
     return hashlib.sha1(str(val)).hexdigest()
 
   @property
+  @utils.summary_hash_memoizer
   def summary_hash(self):
     val = (self.title, self.summary, self.tags, self.published)
     return hashlib.sha1(str(val)).hexdigest()
-  
+
   def publish(self):
     regenerate = False
     if not self.path:
@@ -70,9 +106,13 @@ class BlogPost(db.Model):
       self.put()
       # Force regenerate on new publish. Also helps with generation of
       # chronologically previous and next page.
-      regenerate = True 
-    if not self.deps:
-      self.deps = {}
+      regenerate = True
+
+    BlogDate.create_for_post(self)
+
+    # force refresh of cache, before dependencies are run
+    utils.clear_memoizer_cache(self)
+
     for generator_class, deps in self.get_deps(regenerate=regenerate):
       for dep in deps:
         if generator_class.can_defer:
@@ -82,10 +122,8 @@ class BlogPost(db.Model):
     self.put()
 
   def remove(self):
-    if not self.is_saved():   
+    if not self.is_saved():
       return
-    if not self.deps:
-      self.deps = {}
     # It is important that the get_deps() return the post dependency
     # before the list dependencies as the BlogPost entity gets deleted
     # while calling PostContentGenerator.
@@ -98,9 +136,15 @@ class BlogPost(db.Model):
             generator_class.generate_resource(self, dep, action='delete')
             self.delete()
           else:
-            generator_class.generate_resource(self, dep)  
-  
+            generator_class.generate_resource(self, dep)
+
+    # no longer needed; clear cache for this post
+    if self.path:
+      utils.clear_memoizer_cache(self)
+
   def get_deps(self, regenerate=False):
+    if not self.deps:
+      self.deps = {}
     for generator_class in generators.generator_list:
       new_deps = set(generator_class.get_resource_list(self))
       new_etag = generator_class.get_etag(self)
