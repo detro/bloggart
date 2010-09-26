@@ -12,7 +12,7 @@ host = 'blog.ivandemarino.me'
 
 # Selects the theme to use. Theme names correspond to directories under
 # the 'themes' directory, containing templates and static content.
-theme = 'default'
+theme = 'coolblue'
 
 # Defines the URL organization to use for blog postings. Valid substitutions:
 #   slug - the identifier for the post, derived from the title
@@ -45,7 +45,7 @@ sidebar_blocks = [
       'title'     : 'Twitter stream',
       'username'  : 'detronizator',    # Twitter Username
       'ntweets'   : 5,                 # Number of Tweets to Show
-      'height'    : 500                # Widget Height (='ntweets * 100' is adviced)
+      'height'    : 400                # Widget Height (='ntweets * 100' is adviced)
    },
    # Block of Links: Working on
    {

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>{% block title %}Bloggart{% endblock %}</title>
+  {% block style %}
+  <link rel="stylesheet" type="text/css" media="screen" href="{{config.url_prefix}}/static/{{config.theme}}/css/screen.css" />
+  {% endblock %}
+  {% if config.highlighting_style %}
+  <link rel="stylesheet" type="text/css" media="screen" href="{{config.url_prefix}}/static/{{config.theme}}/css/pygments_{{config.highlighting_style}}.css" />
+  {% endif %}
+  <link rel="alternate" type="application/atom+xml" href="{{config.url_prefix}}/feeds/atom.xml" />
+  <link rel="SHORTCUT ICON" href="{{config.url_prefix}}/favicon.ico"/>
+  {% if config.rel_me %}
+  <link rel="me" href="{{config.rel_me}}" />
+  {% endif %}
+  
+  {% for block in config.sidebar_blocks %}
+  {% ifequal block.type 'gfc' %}
+  {% if block.enabled %}
+  <!-- Include the Google Friend Connect javascript library. -->
+  <script type="text/javascript" src="http://www.google.com/friendconnect/script/friendconnect.js"></script>  
+  {% endif %}
+  {% endifequal %}
+  {% endfor %}
+  
+  {% block head %}{% endblock %}
+</head>
+<body>
+	<div id="header-wrap"><div id="header">
+		<a name="top"></a>
+
+		<h1 id="logo-text"><a href="{{config.url_prefix}}/" title="">{{config.blog_name}}</a></h1>
+		<p id="slogan">{{config.slogan}}</p>
+		<div  id="nav">
+			<ul>
+				<li{% ifequal generator_class "IndexContentGenerator" %} id="current"{% endifequal %}><a href="{{config.url_prefix}}/">Home</a></li>
+				<li{% ifequal generator_class "ArchiveIndexContentGenerator" %} id="current"{% else %}{% ifequal generator_class "ArchivePageContentGenerator" %} id="current"{% endifequal %}{% endifequal %}><a href="{{config.url_prefix}}/archive/">Archive</a></li>
+        {% block menu %}{% endblock %}
+			</ul>
+		</div>
+    <form id="quick-search" action="{{config.url_prefix}}/search" method="get">
+      <fieldset class="search">
+        <label for="q">Search:</label>
+        <input type="hidden" name="cref" value="http://{{config.host}}{{config.url_prefix}}/cse.xml" />
+        <input type="hidden" name="cof" value="FORID:11" />
+        <input type="hidden" name="ie" value="UTF-8" />
+        <input class="tbox" type="text" name="q" size="31" />
+        <button class="btn" title="Search">Search</button>
+      </fieldset>
+    </form>
+	</div></div><!-- header-wrap -->
+	<div id="content-wrap" class="clear" ><div id="content">
+		<div id="main">
+      {% block body %}{% endblock %}
+		</div>
+		<div id="sidebar">
+		    {% for block in config.sidebar_blocks %}
+            {% if block.enabled %}
+                <div class="sidemenu">
+                    {% ifequal block.type 'links' %}
+                        <h3>{% if block.title %}{{ block.title }}{% else %}Links{% endif %}</h3>
+                        {% include "links_block.html" %}
+                    {% endifequal %}
+                    {% ifequal block.type 'gfc' %}
+                        <h3>{% if block.title %}{{ block.title }}{% else %}Members{% endif %}</h3>
+                        {% include "google_friends_connect_block.html" %}
+                    {% endifequal %}
+                    {% ifequal block.type 'twitter' %}
+                        <h3>{% if block.title %}{{ block.title }}{% else %}Twitter{% endif %}</h3>
+                        {% include "twitter_block.html" %}
+                    {% endifequal %}
+                    {% ifequal block.type 'code' %}
+                        <h3>{% if block.title %}{{ block.title }}{% else %}Code Block{% endif %}</h3>
+                        {% include block.path %}
+                    {% endifequal %}
+                </div>
+            {% endif %}
+            {% endfor %}
+		</div><!-- sidebar -->
+	</div></div><!-- content-wrap -->
+		<div id="footer-bottom">
+			<p class="bottom-left">
+			&nbsp; &copy; {{config.author_name}} &nbsp; &nbsp;
+			Design by : <a href="http://www.styleshout.com/">styleshout</a>
+			</p>
+			<p class="bottom-right" >
+			<a href="{{config.url_prefix}}/">Home</a> |
+            <a href="{{config.url_prefix}}/feeds/atom.xml">Atom</a> |
+			<a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> |
+		   	<a href="http://validator.w3.org/check/referer">XHTML</a> |
+		   	<a href="{{config.url_prefix}}/admin/">Admin</a>
+			</p>
+		</div><!-- footer-bottom -->
+{% if config.analytics_id and not devel and not is_admin %}
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("{{config.analytics_id}}");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+{% endif %}
+</body>
+</html>
