@@ -11,7 +11,89 @@
         {% endfor %}
       {% endif %}
     </p>
+    
+    {% if config.sharing_buttons %}
+        <div class="share-box">
+            <ul>
+                <li>
+                    <!-- Twitter Tweet Button: http://twitter.com/goodies/tweetbutton -->
+                    <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="detronizator">Tweet</a>
+                    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+                </li>
+                <li>
+                    <!-- Facebook Share Button: http://www.facebook.com/share/ -->
+                    <a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php">Share</a>
+                    <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+                </li>
+                <li>
+                    <!-- Google Buzz Button: http://www.google.com/buzz/api/admin/configPostWidget -->
+                    <a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="small-count"></a>
+                    <script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
+                </li>
+                <li>
+                    <!-- Reddit Button: http://www.reddit.com/buttons/ -->
+                    <script type="text/javascript" src="http://reddit.com/static/button/button1.js"></script>
+                </li>
+                <li>
+                    <!-- Digg Smart Button: http://about.digg.com/downloads/button/smart -->
+                    <script type="text/javascript">
+                    (function() {
+                    var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('SCRIPT')[0];
+                    s.type = 'text/javascript';
+                    s.async = true;
+                    s.src = 'http://widgets.digg.com/buttons.js';
+                    s1.parentNode.insertBefore(s, s1);
+                    })();
+                    </script>
+                    <!-- Compact Button -->
+                    <a class="DiggThisButton DiggCompact"></a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+    
   {{post.rendered}}
+  
+    {% if config.sharing_buttons %}
+      <div class="share-box">
+          <ul>
+              <li>
+                  <!-- Twitter Tweet Button: http://twitter.com/goodies/tweetbutton -->
+                  <a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="detronizator">Tweet</a>
+                  <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+              </li>
+              <li>
+                  <!-- Facebook Share Button: http://www.facebook.com/share/ -->
+                  <a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php">Share</a>
+                  <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
+              </li>
+              <li>
+                  <!-- Google Buzz Button: http://www.google.com/buzz/api/admin/configPostWidget -->
+                  <a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-button-style="small-count"></a>
+                  <script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
+              </li>
+              <li>
+                  <!-- Reddit Button: http://www.reddit.com/buttons/ -->
+                  <script type="text/javascript" src="http://reddit.com/static/button/button1.js"></script>
+              </li>
+              <li>
+                  <!-- Digg Smart Button: http://about.digg.com/downloads/button/smart -->
+                  <script type="text/javascript">
+                  (function() {
+                  var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('SCRIPT')[0];
+                  s.type = 'text/javascript';
+                  s.async = true;
+                  s.src = 'http://widgets.digg.com/buttons.js';
+                  s1.parentNode.insertBefore(s, s1);
+                  })();
+                  </script>
+                  <!-- Compact Button -->
+                  <a class="DiggThisButton DiggCompact"></a>
+              </li>
+          </ul>
+      </div>
+    {% endif %}
+  
   <p class="postmeta">
     <span class="date">{{post.published_tz|date:config.date_format}}</span>
   </p>

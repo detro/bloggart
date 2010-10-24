@@ -12,7 +12,7 @@ host = 'blog.ivandemarino.me'
 
 # Selects the theme to use. Theme names correspond to directories under
 # the 'themes' directory, containing templates and static content.
-theme = 'coolblue'
+theme = 'default'
 
 # Defines the URL organization to use for blog postings. Valid substitutions:
 #   slug - the identifier for the post, derived from the title
@@ -162,3 +162,6 @@ tzinfo_class = 'timezones.sst.SST'
 # To format the date of your post.
 # http://docs.djangoproject.com/en/1.1/ref/templates/builtins/#now
 date_format = "D d F Y"
+
+# Enable Sharing Buttons.
+sharing_buttons = True

@@ -634,29 +634,20 @@ ul.subscribe-stuff li img {
 
 /* share */
 .right .share-box {
-   margin: 20px 12px 0 20px;
-	padding: 0 10px 10px 20px;
-   background: #FAFAFA;
-   border: 1px solid #EAECEE;
-	overflow: hidden;
-	width: 494px;
-}
-.right .share-box h4 {
- margin-left: 0;
+   background-color: #eef8f9;
+   border: 1px solid #ddecef;
+   height: 20px;
+   padding: 5px;
 }
 .right .share-box ul {
   list-style: none;
   margin: 0; padding: 0;
+  width: 100%;
 }
 .right .share-box ul li {
   float: left;
-  margin-right: 5px;
-}
-.right .share-box ul li a:hover { cursor: pointer; }
-.right .share-box ul li img {
-  margin: 0;
-  padding: 5px;
-  background: #fff;
+  height: 30px;
+  padding-left: 5px;
 }
 
 /* dateinfo */
