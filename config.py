@@ -12,7 +12,7 @@ host = 'blog.ivandemarino.me'
 
 # Selects the theme to use. Theme names correspond to directories under
 # the 'themes' directory, containing templates and static content.
-theme = 'default'
+theme = 'coolblue'
 
 # Defines the URL organization to use for blog postings. Valid substitutions:
 #   slug - the identifier for the post, derived from the title
@@ -117,7 +117,7 @@ html_mime_type = "text/html; charset=utf-8"
 disqus_forum = "blogivandemarinome"
 
 # Length (in words) of summaries, by default
-summary_length = 200
+summary_length = 100
 
 # If you want to use Google Analytics, enter your 'web property id' here
 analytics_id = "UA-136869-8"
