@@ -19,9 +19,15 @@ handlers:
   script: admin.py
   login: admin
 
+- url: /.*\.(css|js)
+  script: minifier.py
+
 - url: /static/([^/]+)/(.*)
   static_files: themes/\1/static/\2
   upload: themes/[^/]+/static/.*
+
+- url: /__regen
+  script: regen.py
 
 - url: /.*
   script: static.py

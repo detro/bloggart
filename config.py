@@ -1,3 +1,17 @@
+import logging
+
+# In production, use 'True'
+memcaching = True
+
+# In production, use 'logging.WARNING'
+logging_level = logging.WARNING
+
+# Enables the URL "/__regen".
+# When a HTTP GET is executed against it, all the Posts are Forcefully Regenerated.
+# Should always be set to "False", except during situations that require
+# to regenerate the content at every request (i.e. while developing a new theme).
+allow_forced_regen = False
+
 # Name of the blog
 blog_name = 'blog. Ivan De Marino'
 

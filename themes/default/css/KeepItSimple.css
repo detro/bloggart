@@ -14,7 +14,7 @@ body {
 	font: 12px/165% "Lucida Grande", "Verdana", "Helvetica", sans-serif;
 	color: #666666; 	
 	margin: 0; padding: 0 0 50px 0; 
-	background: #F6F5F5 url(../images/bg.gif) repeat-x; 
+	background: #F6F5F5 url(/static/{{ config.theme }}/images/bg.gif) repeat-x; 
 	text-align: center;
 }
 /* Links */
@@ -96,7 +96,7 @@ blockquote {
 	margin: 10px;
  	padding: 10px 10px 10px 32px;  
    border: 1px solid #F0F0F0;
-	background: #f8f8f8 url(../images/quote.gif) no-repeat 12px 12px;
+	background: #f8f8f8 url(/static/{{ config.theme }}/images/quote.gif) no-repeat 12px 12px;
 	font-weight: normal;
 	font-size: 17px;
 	line-height: 1.5em;
@@ -186,20 +186,20 @@ input.button {
 }
 #content-wrapper {
 	margin: 0 auto;	
-	background: #fff url(../images/content-bg.gif) repeat-y center top;	
+	background: #fff url(/static/{{ config.theme }}/images/content-bg.gif) repeat-y center top;	
 	padding-bottom: 35px;
 	padding-top: 5px;		
 	overflow: auto;
 }
 #header-wrap {
 	width: 100%;
-	background: #fff url(../images/bg.gif) repeat-x ;	
+	background: #fff url(/static/{{ config.theme }}/images/bg.gif) repeat-x ;	
 	margin: 0; padding: 0; 
 }
 #header {
 	position: relative;
 	margin: 0 auto;
-	background: url(../images/border.gif) repeat-x left bottom; 	
+	background: url(/static/{{ config.theme }}/images/border.gif) repeat-x left bottom; 	
 	height: 302px;	
 }
 #header h1#logo-text { margin: 0; padding: 0; }
@@ -232,7 +232,7 @@ input.button {
 }
 #header #header-image {
 	position: absolute;
-	background: url(../images/header-bloggart-watermark.png) top right no-repeat;
+	background: url(/static/{{ config.theme }}/images/header-bloggart-watermark.png) top right no-repeat;
 	width: 400px;
 	height: 300px;	
 	right: 10px; top: 0;	
@@ -245,7 +245,7 @@ input.button {
 	padding: 0; margin: 0;
 	border: none;
 	width: 270px; height: 33px;
-	background: #F5F4F3 url(../images/header-search.gif) no-repeat;	
+	background: #F5F4F3 url(/static/{{ config.theme }}/images/header-search.gif) no-repeat;	
 	z-index: 999999;
 }
 #header form#quick-search p {
@@ -303,11 +303,11 @@ input.button {
 	background: transparent;
 }
 #header #nav ul li#current {
-	background: transparent url(../images/left-tab.gif) no-repeat;	
+	background: transparent url(/static/{{ config.theme }}/images/left-tab.gif) no-repeat;	
 }
 #header #nav ul li#current a {	
 	color: #444;
-	background: transparent url(../images/right-tab.gif) no-repeat right top;	
+	background: transparent url(/static/{{ config.theme }}/images/right-tab.gif) no-repeat right top;	
 }
 
 /* main column */
@@ -342,7 +342,7 @@ input.button {
 }
 .sidemenu ul li {
 	list-style: none;
-	background: url(../images/dots.gif) repeat-x left bottom; 
+	background: url(/static/{{ config.theme }}/images/dots.gif) repeat-x left bottom; 
 	padding: 7px 5px;
 	margin: 0;		
 }

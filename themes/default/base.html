@@ -3,10 +3,10 @@
 <head>
   <title>{% block title %}Bloggart{% endblock %}</title>
   {% block style %}
-  <link rel="stylesheet" type="text/css" media="screen" href="{{config.url_prefix}}/static/{{config.theme}}/css/screen.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/screen.css" />
   {% endblock %}
   {% if config.highlighting_style %}
-  <link rel="stylesheet" type="text/css" media="screen" href="{{config.url_prefix}}/static/{{config.theme}}/css/pygments_{{config.highlighting_style}}.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/pygments_{{config.highlighting_style}}.css" />
   {% endif %}
   <link rel="alternate" type="application/atom+xml" 
 	href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{config.url_prefix}}/feeds/atom.xml{% endif %}" />
