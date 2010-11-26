@@ -131,7 +131,7 @@ html_mime_type = "text/html; charset=utf-8"
 disqus_forum = "blogivandemarinome"
 
 # Length (in words) of summaries, by default
-summary_length = 100
+summary_length = 50
 
 # If you want to use Google Analytics, enter your 'web property id' here
 analytics_id = "UA-136869-8"
@@ -151,7 +151,7 @@ google_sitemap_ping = True
 google_site_verification = "googledb30cb13b3e7812d.html"
 
 # Default markup language for entry bodies (defaults to html).
-default_markup = 'html'
+default_markup = 'markdown'
 
 # Syntax highlighting style for RestructuredText and Markdown,
 # one of 'manni', 'perldoc', 'borland', 'colorful', 'default', 'murphy',
