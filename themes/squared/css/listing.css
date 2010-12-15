@@ -12,7 +12,7 @@ article.inlisting section {
    color: #444;
 }
 
-article.inlisting section div.img, article.inlisting section img {
+article.inlisting section div.img, article.inlisting section img, article.inlisting section iframe {
    display: none;
 }
 
