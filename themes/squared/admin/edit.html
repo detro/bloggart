@@ -1,0 +1,60 @@
+{% extends "admin/base.html" %}
+{% block title %}{% if form.instance %}Edit{% else %}New{% endif %} Post{% endblock %}
+
+{% block body %}
+<div id="main">
+    <h1>{% if form.instance %}Edit{% else %}New{% endif %} Post</h1>
+    <form method="post" action="">
+        <table id="form">
+            {{form}}
+            <tr>
+                <th class="transparent">&nbsp;</th>
+                <td><input type="submit" value="Publish / Update / Save Post" /></td>
+            </tr>
+        </table>
+
+    </form>
+    
+    <h2>Note</h2>
+    <p>
+    <ul>
+        <li>
+            Separate multiple <strong>Tags</strong> with newline. For example:
+            <blockquote class="serif">tag<br />
+                category<br />
+                another tag<br />
+                another category
+            </blockquote>
+        </li>
+        <li>
+            Supported <strong>Body markup</strong>:
+            <ul>
+                <li>
+                    HTML:
+                    <em><a href="http://www.google.com/search?q=html" target="_blank">really</a></em>?
+                </li>
+                <li>
+                    Markdown:
+                    <a href="http://daringfireball.net/projects/markdown/syntax" target="_blank">Official Syntax</a>
+                    and
+                    <a href="http://daringfireball.net/projects/markdown/dingus" target="_blank">Online Converter</a>.
+                </li>
+                <li>
+                    Textile:
+                    <a href="http://textile.thresholdstate.com/" target="_blank">Official Page</a>
+                    and
+                    <a href="http://en.wikipedia.org/wiki/Textile_(markup_language)" target="_blank">Syntax (Wikipedia)</a>.
+                </li>
+                <li>
+                    ReStructuredText:
+                    <a href="http://docutils.sourceforge.net/rst.html" target="_blank">Official Page</a>.
+                </li>
+            </ul>
+        </li>
+        <li>
+            Remember to select <strong>Draft</strong> if you don't want to publish yet.
+        </li>
+    </ul>
+    </p>
+</div>
+{% endblock %}

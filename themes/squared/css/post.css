@@ -1,0 +1,102 @@
+/* --------------------------------- article.inpost */
+article.inpost {
+   margin: 20px 0 40px 0;
+   background: transparent;
+   color: black;
+}
+
+article.inpost header time, article.inpost header span, article.inpost footer span {
+   color: #aaa;
+   font-size: 18px;
+   height: 24px;
+}
+
+article.inpost .lefticon {
+   padding: 6px 0 0 22px;
+   float: left;
+}
+
+article.inpost .righticon {
+   padding: 6px 22px 0 0;
+   float: right;
+}
+
+article.inpost header time {
+   background: transparent url('/static/{{ config.theme }}/icons/clock.png') center left no-repeat;
+}
+
+article.inpost header span#tags {
+   background: transparent url('/static/{{ config.theme }}/icons/tag.png') 4px right no-repeat;
+   clear: both;
+}
+
+article.inpost header span#comments {
+   background: transparent url('/static/{{ config.theme }}/icons/comments.png') center right no-repeat;
+}
+
+article.inpost section {
+   margin: 20px 0;
+   font-size: 20px;
+   line-height: 160%;
+}
+
+article.inpost section div.img {
+   margin: 20px 0;
+   text-align: center;
+   font-size: 16px;
+   color: #611;
+   font-style: italic;
+}
+
+article.inpost section div.img img {
+   padding: 10px;
+   background-color: #f2f2f2;
+   border: 1px solid #e2e2e2;
+   margin: 10px auto;
+   display: block;
+   clear: both;
+   
+   border-radius: 4px;
+   -moz-border-radius: 4px;
+   -webkit-border-radius: 4px;
+   
+   box-shadow: 0 0 5px #ddd;
+   -o-box-shadow: 0 0 5px #ddd;
+   -webkit-box-shadow: 0 0px 5px #ddd;
+   -moz-box-shadow: 0 0 5px #ddd;
+}
+
+/* --------------------------------- div#share_buttons */
+div#share_buttons {
+   display: block;
+   height: 75px;
+}
+
+div#share_buttons > span {
+   color: #ccc;
+   clear: left;
+   float: left;
+   height: 72px;
+   padding-top: 22px;
+   font-size: 26px;
+   font-style: italic;
+}
+
+div#share_buttons ul {
+   float: right;
+   clear: right;
+   height: 72px;
+   display: block;
+}
+
+div#share_buttons ul li {
+   list-style: none;
+   display: inline;
+   margin-left: 30px;
+}
+
+div#share_buttons ul li a.google-buzz-button { display: inline; margin-left: -8px; }
+
+div#share_buttons ul li a.google-buzz-button span.buzz-counter { padding: 8px 0 0 0; }
+
+div#share_buttons ul li span.db-wrapper { height: 72px; }

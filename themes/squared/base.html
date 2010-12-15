@@ -1,0 +1,114 @@
+<!doctype html>  
+
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>{% block title %}{{config.blog_name}}{% endblock %}</title>
+    <meta name="description" content="{{config.blog_name}} - {{config.slogan}}">
+    <meta name="author" content="{{config.author_name}}">
+    {% if config.rel_me %}
+    <link rel="me" href="{{config.rel_me}}" />
+    {% endif %}
+
+    <link rel="alternate" type="application/atom+xml" 
+        href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="{{ config.url_prefix }}/static/{{config.theme}}/icons/favicon.ico">
+    <link rel="shortcut icon" href="{{ config.url_prefix }}/favicon.ico">
+    <link rel="apple-touch-icon" href="{{ config.url_prefix }}/static/{{config.theme}}/icons/apple-touch-icon.png">
+    
+    <link rel="stylesheet" media="screen" href="{{ config.url_prefix }}/css/screen.css" />
+    <link rel="stylesheet" media="print" href="{{ config.url_prefix }}/css/print.css">
+    <link rel="stylesheet" media="handheld" href="{{ config.url_prefix }}/css/handheld.css">
+    {% if config.highlighting_style %}
+    <link rel="stylesheet" media="screen" href="/css/pygments/pygments_{{config.highlighting_style}}.css" />
+    {% endif %}
+    
+    <script src="{{ config.url_prefix }}/js/lib/modernizr-1.6.min.js"></script>
+    
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <div id="slogan" class="sans">{{ config.slogan }}</div>
+    
+    <nav id="topnavbar">
+        <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}"
+            ><img id="feed" src="/static/{{ config.theme }}/icons/rss.png" /></a>
+        <span id="title"><a href="{{ config.url_prefix }}/">{{config.blog_name}}</a></span>
+        
+        <span id="internallinks" class="leftseparator">
+            <ul>
+                <li{% ifequal generator_class "IndexContentGenerator" %} id="current"{% endifequal %}><a href="{{ config.url_prefix }}/">Home</a></li>
+				<li{% ifequal generator_class "ArchiveIndexContentGenerator" %} id="current"{% else %}{% ifequal generator_class "ArchivePageContentGenerator" %} id="current"{% endifequal %}{% endifequal %}><a href="{{ config.url_prefix }}/archive/">Archive</a></li>
+                {% block menu %}{% endblock %}
+            </ul>
+        </span><!-- end of #internallinks -->
+        
+        <span id="searchbox" class="leftseparator">
+            <form id="quick-search" action="{{ config.url_prefix }}/search" method="get">
+                <input type="hidden" name="cref" value="http://{{config.host}}{{ config.url_prefix }}/cse.xml" />
+                <input type="hidden" name="cof" value="FORID:11" />
+                <input type="hidden" name="ie" value="UTF-8" />
+                <input class="sanstypeface" type="text" placeholder="Search" name="q" />
+            </form>
+        </span><!-- end of #searchbox -->
+        
+        <span id="links">
+            <ul>
+                <li>me</li><li>@</li>                
+                {% for account in config.external_accounts %}
+                <li><a href="{{ account.url }}" target="_blank">{{ account.service }}</a></li>
+                {% endfor %}
+            </ul>
+        </span><!-- end of #links -->
+    </nav><!-- end of #topnavbar -->
+   
+    <div id="container">
+        {% block body %}{% endblock %}
+    </div> <!-- end of #container -->
+  
+    <footer id="bottomfooter">
+        &copy; {{ config.author_name }}
+        &#151;
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>
+        &#151;
+        Powered by: <a href="https://github.com/detro/bloggart">Ivan De Marino's Bloggart</a>
+        &#151;
+        Theme <em>"Squared"</em> by: <a href="https://blog.ivandemarino.me/">Ivan De Marino</a>
+        &#151;
+        <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}">Atom</a>
+        |
+        <a href="{{ config.url_prefix }}/admin/">Admin</a>
+    </footer><!-- end of #bottomfooter -->
+
+    <script src="{{ config.url_prefix }}/js/base.js"></script>  
+  
+    <!--[if lt IE 7 ]>
+    <script src="{{ config.url_prefix }}/js/lib/dd_belatedpng.js"></script>
+    <script> DD_belatedPNG.fix('img, .png_bg'); </script>
+    <![endif]-->
+
+    {% if config.analytics_id and not devel and not is_admin %}
+    <!-- Asynchronous Google Analytics library loading -->
+    <script>
+        var _gaq = [['_setAccount', '{{config.analytics_id}}'], ['_trackPageview']];
+        (function(d, t) {
+            var g = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+            g.async = true;
+            g.src = ('https:' == location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g, s);
+        })(document, 'script');
+    </script>
+    {% endif %}
+</body>
+</html>

@@ -6,12 +6,6 @@ memcaching = True
 # In production, use 'logging.WARNING'
 logging_level = logging.WARNING
 
-# Enables the URL "/__regen".
-# When a HTTP GET is executed against it, all the Posts are Forcefully Regenerated.
-# Should always be set to "False", except during situations that require
-# to regenerate the content at every request (i.e. while developing a new theme).
-allow_forced_regen = False
-
 # Name of the blog
 blog_name = 'blog. Ivan De Marino'
 
@@ -26,7 +20,7 @@ host = 'blog.ivandemarino.me'
 
 # Selects the theme to use. Theme names correspond to directories under
 # the 'themes' directory, containing templates and static content.
-theme = 'coolblue'
+theme = 'squared'
 
 # Defines the URL organization to use for blog postings. Valid substitutions:
 #   slug - the identifier for the post, derived from the title
@@ -120,8 +114,17 @@ sidebar_blocks = [
    },
 ]
 
+# Links to External Services on which the User has an Account.
+# This will be listed in a theme-specific way.
+external_accounts = [
+   { 'service' : 'github', 'url' : 'https://github.com/detro' },
+   { 'service' : 'linkedin', 'url' : 'http://www.linkedin.com/in/ivandemarino' },
+   { 'service' : 'twitter', 'url' : 'http://twitter.com/detronizator' },
+   { 'service' : 'kickstarter', 'url' : 'http://www.kickstarter.com/profile/ivandemarino' }
+]
+
 # Number of entries per page in indexes.
-posts_per_page = 5
+posts_per_page = 10
 
 # The mime type to serve HTML files as.
 html_mime_type = "text/html; charset=utf-8"
@@ -175,7 +178,7 @@ tzinfo_class = 'timezones.sst.SST'
 
 # To format the date of your post.
 # http://docs.djangoproject.com/en/1.1/ref/templates/builtins/#now
-date_format = "D d F Y"
+date_format = "D j F Y"
 
 # Enable Sharing Buttons.
 sharing_buttons = True

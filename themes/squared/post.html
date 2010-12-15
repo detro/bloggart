@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title|escape }} - {{ config.blog_name }}{% endblock %}
+
+{% block body %}
+<div id="main">
+    <article class="inpost">
+        <header class="clearfix">
+            <h1><a href="{{ config.url_prefix }}{{ post.path }}">{{ post.title|escape }}</a></h1>
+            <time class="lefticon" datetime="{{ post.published_tz|date:"Y-m-d" }}">{{ post.published_tz|date:config.date_format }}</time>
+            <span class="righticon" id="comments"><a href="{{ config.url_prefix }}{{ post.path }}#disqus_thread">Comments</a></span>
+            {% if post.tags %}
+            <span class="righticon" id="tags">
+                {% for tag in post.tag_pairs %}
+                <a href="{{ config.url_prefix }}/tag/{{ tag.1|escape }}">{{ tag.0|escape }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </span>
+            {% endif %}
+        </header>
+        <section class="serif">
+            {{post.rendered}}
+        </section>
+    </article>
+    
+    {% if config.sharing_buttons %}
+        <div id="share_buttons">
+            <span class="serif">
+                Enjoyed the read? Share it:
+            </span>
+            <ul>
+                <li>
+                    <!-- Twitter Tweet Button: http://twitter.com/goodies/tweetbutton -->
+                    <a href="http://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="detronizator">Tweet</a>
+                    <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+                </li>
+                <li>
+                    <!-- Facebook Share Button: http://www.facebook.com/share/ -->
+                    <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&amp;layout=box_count&amp;show_faces=true&amp;width=55&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=60"
+                        scrolling="no" frameborder="0"
+                        style="border:none; overflow:hidden; width:55px; height:60px;" allowTransparency="true"></iframe>
+                </li>
+                <li>
+                    <!-- Google Buzz Button: http://www.google.com/buzz/api/admin/configPostWidget -->
+                    <a title="Post to Google Buzz" class="google-buzz-button" href="http://www.google.com/buzz/post" data-admin-site="true" data-button-style="normal-count"></a>
+                    <script type="text/javascript" src="http://www.google.com/buzz/api/button.js"></script>
+                </li>
+                <li>
+                    <!-- Digg Smart Button: http://about.digg.com/downloads/button/smart -->
+                    <script type="text/javascript">
+                    (function() {
+                    var s = document.createElement('SCRIPT'), s1 = document.getElementsByTagName('SCRIPT')[0];
+                    s.type = 'text/javascript';
+                    s.async = true;
+                    s.src = 'http://widgets.digg.com/buttons.js';
+                    s1.parentNode.insertBefore(s, s1);
+                    })();
+                    </script>
+                    <!-- Medium Button -->
+                    <a class="DiggThisButton DiggMedium"></a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+    
+</div><!-- end of #main -->
+
+<div id="bottomnavigation" class="clearfix">
+    {% if prev %}
+    <span id="olderlink" class="lefticon">
+        <a href="{{ config.url_prefix }}{{ prev.path }}">Previous Post</a>
+    </span>
+    {% endif %}
+    {% if next %}
+    <span id="newerlink" class="righticon">
+        <a href="{{ config.url_prefix }}{{ next.path }}">Next Post</a>
+    </span>
+    {% endif %}
+</div><!-- end of #navigation -->
+
+{% if config.disqus_forum %}
+<h3 id="comments">Comments</h3>
+    <div id="disqus_thread"></div>
+    {% if devel %}
+    <script type="text/javascript">
+        disqus_developer = 1;
+    </script>
+    {% endif %}
+    <script type="text/javascript" src="http://disqus.com/forums/{{config.disqus_forum}}/embed.js"></script>
+    <noscript><a href="http://disqus.com/forums/{{config.disqus_forum}}/?url=ref">View the discussion thread.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+{% endif %}
+
+{% endblock %}

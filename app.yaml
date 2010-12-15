@@ -26,8 +26,5 @@ handlers:
   static_files: themes/\1/static/\2
   upload: themes/[^/]+/static/.*
 
-- url: /__regen
-  script: regen.py
-
 - url: /.*
   script: static.py

@@ -1,0 +1,47 @@
+table#form, table#posts {
+   width: 100%;
+}
+
+table#form input[type="text"], table#form textarea {
+   width: 100%;
+   font-size: 16px;
+}
+
+table#form textarea#message {
+   height: 500px;
+}
+
+table#form td, table#form th, table#posts td, table#posts th {
+   padding: 5px;
+   vertical-align: center;
+}
+
+table#form th {
+   text-align: right;
+   background-color: #f2f2f2;
+   border-right: 5px #ccc solid;
+   width: 25%;
+   min-width: 25%;
+}
+
+table#form th.transparent {
+   background-color: transparent;
+}
+
+table#form td {
+   text-align: left;
+   width: 75%;
+   max-width: 75%;
+}
+
+form input[type="submit"] {
+   margin: 10px 0 10px;
+}
+
+table#posts td.published, table#posts td.actions {
+   text-align: center;
+}
+
+form select#gen_list {
+   font-size: 80%;
+}
