@@ -27,9 +27,9 @@
     
     <link rel="stylesheet" media="screen" href="{{ config.url_prefix }}/css/screen.css" />
     <link rel="stylesheet" media="print" href="{{ config.url_prefix }}/css/print.css">
-    <link rel="stylesheet" media="handheld" href="{{ config.url_prefix }}/css/handheld.css">
+    <!-- <link rel="stylesheet" media="handheld" href="{{ config.url_prefix }}/css/handheld.css"> 2010-12-15 "Removing for now. Better normal layout and mess." -->
     {% if config.highlighting_style %}
-    <link rel="stylesheet" media="screen" href="/css/pygments/pygments_{{config.highlighting_style}}.css" />
+    <link rel="stylesheet" media="screen" href="{{ config.url_prefix }}/css/pygments/pygments_{{config.highlighting_style}}.css" />
     {% endif %}
     
     <script src="{{ config.url_prefix }}/js/lib/modernizr-1.6.min.js"></script>
@@ -38,7 +38,7 @@
 </head>
 
 <body>
-    <!--<div id="slogan" class="sans">{{ config.slogan }}</div>-->
+    <!--<div id="slogan" class="sans">{{ config.slogan }}</div> 2010-12-15 "Temporary remove while trying to relocate" -->
     
     <nav id="topnavbar">
         <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}"
