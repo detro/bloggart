@@ -5,14 +5,18 @@ article.inlisting {
    color: black;
 }
 
-article.inlisting header h1 { font-size: 30px; }
-
 article.inlisting section {
-   font-size: 16px;
+   font-size: 18px;
    color: #444;
 }
 
-article.inlisting section div.img, article.inlisting section img, article.inlisting section iframe {
+article.inlisting section div.img,
+article.inlisting section img,
+article.inlisting section iframe,
+article.inlisting section object,
+article.inlisting section embed,
+article.inlisting section video {
+   /* Hide images, flash video, html5 video and other objects that ruin the listing */
    display: none;
 }
 
@@ -20,6 +24,8 @@ article.inlisting section div#meta {
    float: left;
    width: 215px;
    padding-right: 5px;
+   color: #aaa;
+   font-size: 14px;
 }
 
 article.inlisting section div#abstract {
@@ -27,12 +33,11 @@ article.inlisting section div#abstract {
    width: 494px;
    border-left: 1px dashed #eee;
    padding-left: 5px;
+   line-height: 160%;
 }
 
 article.inlisting section div#meta time,
 article.inlisting section div#meta span {
-   color: #aaa;
-   font-size: 14px;
    height: 24px;
 }
 

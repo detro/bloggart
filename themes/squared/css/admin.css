@@ -2,6 +2,10 @@ table#form, table#posts {
    width: 100%;
 }
 
+table#posts {
+   font-size: 16px;
+}
+
 table#form input[type="text"], table#form textarea {
    width: 100%;
    font-size: 16px;

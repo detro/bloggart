@@ -1,18 +1,23 @@
 .sans {
-   font-family: 'Myriad Pro', Arial, sans-serif;
+   font-family: 'Myriad Pro', 'Lucida Sans Unicode', 'Lucida Grande', 'Arial', 'Helvetica', sans-serif;
 }
 
 .serif {
-   font-family: Georgia, Times, serif;
+   font-family: 'Palatino Linotype', 'Book Antiqua', 'Palatino', Georgia, Times, serif;
 }
 
-::-moz-selection{ background: #822; color:#fff; text-shadow: none; }
-::selection { background:#822; color:#fff; text-shadow: none; } 
-a:link { -webkit-tap-highlight-color: #822; }
+::-moz-selection{ background: #aaa; color:#fff; text-shadow: none; }
+::selection { background:#aaa; color:#fff; text-shadow: none; } 
+a:link { -webkit-tap-highlight-color: #aaa; }
 
 html, body, h1, h2, h3, h4, h5 {
-   font-family: 'Myriad Pro', Arial, sans-serif;
+   font-family: 'Myriad Pro', 'Lucida Sans Unicode', 'Lucida Grande', 'Arial', 'Helvetica', sans-serif;
    font-weight: normal;
+}
+
+body, nav#topnavbar, footer#bottomfooter {
+   /* Force a minimum width for the body AND for fixed elements */
+   min-width: 1100px;
 }
 
 h1, h2, h3, h4, h5 { color: #611; text-shadow: 0px 1px 2px #888; margin: 20px 0; }
@@ -31,13 +36,46 @@ p:first-child {
    margin-top: 0;
 }
 
+div.img img, blockquote, div#highlight {
+   background: #eee;
+   background: linear-gradient(top, #ddd, #eee);
+   background: -moz-linear-gradient(top, #ddd 0%, #eee 100%);
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ddd), color-stop(100%,#eee));
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#eeeeee',GradientType=0 );
+   
+   border-top: 1px solid #fff;
+   border-left: 1px solid #ddd;
+   border-right: 1px solid #ddd;
+   border-bottom: 1px solid #ddd;
+   
+   border-radius: 5px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+   
+   box-shadow: 0 0 5px #ddd;
+   -o-box-shadow: 0 0 5px #ddd;
+   -webkit-box-shadow: 0 0px 5px #ddd;
+   -moz-box-shadow: 0 0 5px #ddd;
+   
+   text-shadow: 0 1px 0 #fff;
+}
+
+div.img img {
+   padding: 10px;
+   margin: 10px auto;
+   display: block;
+   clear: both;
+   font-size: 110%;
+}
+
 blockquote {
-   font-size: 80%;
-   padding: 10px 0 10px 10px;
-   border-left: 5px #ccc solid;
-   background-color: #f2f2f2;
    font-style: italic;
+   padding: 10px 20px;
    margin: 10px 0;
+}
+
+div#highlight {
+   font-size: 14px;
 }
 
 a, a:link, a:visited {
@@ -62,17 +100,10 @@ div#container {
 
 div#main {
    font-size: 20px;
-   padding-top: 40px;
 }
 
 div#slogan {
    display: block;
-	writing-mode: bt-lr;
-	-webkit-transform: rotate(-90deg);	
-	-moz-transform: rotate(-90deg);
-	position: fixed;
-	left: -30px;
-   top: 250px;
    font-size: 16px;
    color: #dddddd;
    font-style: italic;
@@ -80,8 +111,6 @@ div#slogan {
 
 /* --------------------------------- nav#topnavbar */
 nav#topnavbar {
-   position: fixed;
-   top: 0; left: 0; right: 0;
    background-color: #eee;
    height: 40px;
    font-size: 20px;
@@ -147,7 +176,8 @@ nav#topnavbar span#links ul > li:last-child {
 nav#topnavbar span#searchbox {
    float: right;
    margin: 0; padding: 0;
-   height: 40px; width: 200px;
+   height: 40px; width: 210px;
+   text-align: center;
 }
 
 nav#topnavbar span#searchbox input {
@@ -164,7 +194,7 @@ nav#topnavbar span.leftseparator {
 
 /* --------------------------------- div#bottomnavigation */
 div#bottomnavigation {
-   margin: 40px -50px;
+   margin: 40px -50px 0 -50px;
    border-top: 1px solid #eee;
 }
 
@@ -186,25 +216,55 @@ div#bottomnavigation span#newerlink {
 }
 
 /* --------------------------------- footer */
-body > footer {
-   padding: 20px;
+footer#bottomfooter {
+   padding: 20px 0 35px;
+   height: 80px;
    background: #822;
    box-shadow: inset 0 5px 20px #000;
    -o-box-shadow: inset 0 5px 20px #000;
    -webkit-box-shadow: inset 0 5px 20px #000;
    -moz-box-shadow: inset 0 5px 20px #000;
    color: white;
+   font-size: 14px;
+   line-height: 150%;
    text-align: center;
-   font-size: 11px;
-   letter-spacing: 1px;
+   text-shadow: 0 1px 2px #444;
 }
 
-body > footer a, body > footer a:link, body > footer a:visited {
+footer#bottomfooter a, footer#bottomfooter a:link, footer#bottomfooter a:visited {
    color: #888;
 }
 
-body > footer a:hover {
+footer#bottomfooter a:hover {
    color: #ccc;
+}
+
+footer#bottomfooter div#leftfoot {
+   float: left;
+   padding-left: 10px;
+   text-align: left;
+   width: 39%;
+   height: 100%;
+}
+
+footer#bottomfooter div#rightfoot {
+   float: right;
+   padding-right: 10px;
+   text-align: right;
+   width: 59%;
+   height: 100%;
+   display: block;
+}
+
+footer#bottomfooter div#centerfoot {
+   width: 100%;
+   float: left;
+   display: block;
+}
+
+footer#bottomfooter div#rightfoot div#slogan {
+   font-size: 20px;
+   display: block;
 }
 
 /* --------------------------------- article */

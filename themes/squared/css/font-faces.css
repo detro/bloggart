@@ -10,3 +10,9 @@
   font-weight: normal;
   src: local('Droid Sans'), local('DroidSans'), url('http://themes.googleusercontent.com/font?kit=rS9BT6-asrfjpkcV3DXf__esZW2xOQ-xsNqO47m55DA') format('truetype');
 }
+@font-face {
+  font-family: 'UnifrakturMaguntia';
+  font-style: normal;
+  font-weight: normal;
+  src: local('UnifrakturMaguntia'), url('http://themes.googleusercontent.com/font?kit=7KWy3ymCVR_xfAvvcIXm3-kdNg30GQauG_DE-tMYtWk') format('truetype');
+}

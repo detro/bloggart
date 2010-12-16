@@ -27,7 +27,7 @@
     
     <link rel="stylesheet" media="screen" href="{{ config.url_prefix }}/css/screen.css" />
     <link rel="stylesheet" media="print" href="{{ config.url_prefix }}/css/print.css">
-    <!-- <link rel="stylesheet" media="handheld" href="{{ config.url_prefix }}/css/handheld.css"> 2010-12-15 "Removing for now. Better normal layout and mess." -->
+    <link rel="stylesheet" media="handheld" href="{{ config.url_prefix }}/css/handheld.css">
     {% if config.highlighting_style %}
     <link rel="stylesheet" media="screen" href="{{ config.url_prefix }}/css/pygments/pygments_{{config.highlighting_style}}.css" />
     {% endif %}
@@ -38,11 +38,8 @@
 </head>
 
 <body>
-    <!--<div id="slogan" class="sans">{{ config.slogan }}</div> 2010-12-15 "Temporary remove while trying to relocate" -->
-    
     <nav id="topnavbar">
-        <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}"
-            ><img id="feed" src="/static/{{ config.theme }}/icons/rss.png" /></a>
+        <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}"><img id="feed" src="/static/{{ config.theme }}/icons/rss.png" /></a>
         <span id="title"><a href="{{ config.url_prefix }}/">{{config.blog_name}}</a></span>
         
         <span id="internallinks" class="leftseparator">
@@ -77,17 +74,22 @@
     </div> <!-- end of #container -->
   
     <footer id="bottomfooter">
-        &copy; {{ config.author_name }}
-        &#151;
-        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>
-        &#151;
-        Powered by: <a href="https://github.com/detro/bloggart">Ivan De Marino's Bloggart</a>
-        &#151;
-        Theme <em>"Squared"</em> by: <a href="https://blog.ivandemarino.me/">Ivan De Marino</a>
-        &#151;
-        <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}">Atom</a>
-        |
-        <a href="{{ config.url_prefix }}/admin/">Admin</a>
+        <div id="leftfoot">
+            License: <em><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">C.C. Attribution-ShareAlike 3.0</a></em>
+            <br />
+            Powered by: <em><a href="https://github.com/detro/bloggart">Ivan De Marino's Bloggart</a></em>
+            <br />
+            Theme: <em>"Squared" <a href="https://blog.ivandemarino.me/">Ivan De Marino</a></em>
+        </div>
+        <div id="rightfoot">
+            <div id="slogan" class="serif">&laquo;{{ config.slogan }}&raquo;</div>
+            <br />
+            <br />
+            <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}">Atom</a>
+            |
+            <a href="{{ config.url_prefix }}/admin/">Admin</a>
+        </div>
+        <div id="centerfoot">A blog by: <em>{{ config.author_name }}</em></div>
     </footer><!-- end of #bottomfooter -->
 
     <script src="{{ config.url_prefix }}/js/base.js"></script>  
