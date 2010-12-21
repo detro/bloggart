@@ -42,9 +42,12 @@ class CssMinifier( webapp.RequestHandler ):
 
          # Minify ONLY IF NOT Debugging
          if ( config.logging_level != logging.DEBUG ):
-            logging.debug("Minifying CSS: "+requestedCssFilename);
+            logging.info("Minifying CSS: "+requestedCssFilename);
             # Minify CSS
-            cssRenderingResult = cssmin.minify(cssRenderingResult);
+            try:
+               cssRenderingResult = cssmin.minify(cssRenderingResult);
+            except:
+               logging.warning("CSS Minification failed: " + requestedCssFilename); 
          
          # Save in Memcache
          memcache.set(cssPath, cssRenderingResult);
@@ -83,9 +86,12 @@ class JSMinifier( webapp.RequestHandler ):
 
          # Minify ONLY IF NOT Debugging
          if ( config.logging_level != logging.DEBUG ):
-            logging.debug("Minifying Javascript: "+requestedJsFilename);
+            logging.info("Minifying Javascript: " + requestedJsFilename);
             # Minify Javascript
-            jsRenderingResult = jsmin.jsmin(jsRenderingResult);
+            try:
+               jsRenderingResult = jsmin.jsmin(jsRenderingResult);
+            except:
+               logging.warning("Javascript Minification failed: " + requestedJsFilename); 
          
          # Save in Memcache
          memcache.set(jsPath, jsRenderingResult);
