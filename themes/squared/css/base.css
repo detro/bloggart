@@ -36,7 +36,7 @@ p:first-child {
    margin-top: 0;
 }
 
-div.img img, blockquote, div.highlight {
+div.img img, blockquote {
    background: #eee;
    background: linear-gradient(top, #ddd, #eee);
    background: -moz-linear-gradient(top, #ddd 0%, #eee 100%);
@@ -74,9 +74,31 @@ blockquote {
    margin: 10px 0;
 }
 
-div.highlight {
-   font-size: 13px;
+div.linenodiv pre, div.highlight pre {
+	font-size: 11px;
    margin: 10px 0;
+   white-space: pre;
+   font-family: 'Monaco', 'Courier New', 'Courier', monospace;
+}
+
+div.highlight pre {   
+   background-color: #fafafa;
+   
+   border-top: 1px solid #fff;
+   border-left: 1px solid #ddd;
+   border-right: 1px solid #ddd;
+   border-bottom: 1px solid #ddd;
+   
+   border-radius: 10px;
+   -moz-border-radius: 10px;
+   -webkit-border-radius: 10px;
+   
+   box-shadow: 0 0 5px #ddd;
+   -o-box-shadow: 0 0 5px #ddd;
+   -webkit-box-shadow: 0 0px 5px #ddd;
+   -moz-box-shadow: 0 0 5px #ddd;
+   
+   text-shadow: 0 1px 0 #fff;
 }
 
 a, a:link, a:visited {
