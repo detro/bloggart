@@ -25,8 +25,7 @@ class CssMinifier( webapp.RequestHandler ):
       cssPath = os.path.join( os.path.dirname( __file__ ), 'themes/%s/%s' % (config.theme, requestedCssFilename) );
       if ( not os.path.exists(cssPath) ):
          logging.error("CSS not found: "+cssPath);
-         # Client Error 4xx - 404 Not Found
-         util.setErrorResponse(self, 404);
+         self.error(404); # Client Error 4xx - 404 Not Found
          return;
       
       cssRenderingResult = None;
@@ -70,8 +69,7 @@ class JSMinifier( webapp.RequestHandler ):
       jsPath = os.path.join( os.path.dirname( __file__ ), 'themes/%s/%s' % (config.theme, requestedJsFilename) );
       if ( not os.path.exists(jsPath) ):
          logging.error("Javascript not found: "+jsPath);
-         # Client Error 4xx - 404 Not Found
-         util.setErrorResponse(self, 404);
+         self.error(404); # Client Error 4xx - 404 Not Found
          return;
       
       jsRenderingResult = None;

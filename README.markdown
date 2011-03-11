@@ -1,6 +1,18 @@
 Bloggart is a _blog application_ for Google App Engine.
 Is written in Python and uses all the Google App Engine Python goodness.
 
+## ATTENTION --- ATTENTION --- ATTENTION
+### "default" and "coolblue" themes are currently broken
+If you plan to use my fork of Bloggart, bear in mind that currently the _"default"_ and _"coolblue"_
+themes are not working. New features (i.e. 'Pages') have made me change the name of some values
+passed to the templates: I forgot to promptly update the themes, and now they are broken
+(mostly the 'admin' pages).
+
+If you would like to take on the task to fix them (it's "just" a matter to fix the template
+variables), **please**, feel free to fork. I'll be more than happy to pull in your changes!
+
+*2011-03-11* > detro  
+
 ## A bit of history
 
 It was originally developed as a demonstration app from Nick Johnson for
