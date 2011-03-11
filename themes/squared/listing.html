@@ -4,9 +4,6 @@
 <div id="main">
     {% for post in posts %}
     <article class="inlisting clearfix">
-        <header class="clearfix">
-            <h1><a href="{{ config.url_prefix }}{{ post.path }}">{{ post.title|escape }}</a></h1>
-        </header>
         <section class="clearfix">
             <div id="meta" class="clearfix">
                 <time class="lefticon" datetime="{{ post.published_tz|date:"Y-m-d" }}">{{ post.published_tz|date:config.date_format }}</time>
@@ -20,8 +17,8 @@
                 {% endif %}
             </div>
             <div id="abstract" class="serif">
-                {{ post.summary|truncatewords_html:"50" }}
-                <span class="righticon clearfix sans" id="readmore"><a href="{{ config.url_prefix }}{{ post.path }}">Read More</a></span>
+                <header><h1><a href="{{ config.url_prefix }}{{ post.path }}">{{ post.title|escape }}</a></h1></header>
+                <span class="righticon clearfix sans" id="readmore"><a href="{{ config.url_prefix }}{{ post.path }}">Read more...</a></span>
             </div>
         </section>
     </article>

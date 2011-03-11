@@ -1,8 +1,8 @@
-table#form, table#posts {
+table#form, table#posts, table#pages {
    width: 100%;
 }
 
-table#posts {
+table#posts, table#pages {
    font-size: 16px;
 }
 
@@ -15,9 +15,13 @@ table#form textarea#message {
    height: 500px;
 }
 
-table#form td, table#form th, table#posts td, table#posts th {
+table#form td, table#form th, table#posts td, table#posts th, table#pages td, table#pages th {
    padding: 5px;
    vertical-align: center;
+}
+
+table td.published, table td.actions {
+  white-space: nowrap;
 }
 
 table#form th {
@@ -38,11 +42,17 @@ table#form td {
    max-width: 75%;
 }
 
+table#form td ul.errorlist {
+   color: red;
+   float: right;
+   list-style: none;
+}
+
 form input[type="submit"] {
    margin: 10px 0 10px;
 }
 
-table#posts td.published, table#posts td.actions {
+table#posts td.published, table#posts td.actions, table#pages td.published, table#pages td.actions {
    text-align: center;
 }
 

@@ -1,26 +1,26 @@
 {% extends "admin/base.html" %}
-{% block title %}Post published{% endblock %}
+{% block title %}{{ type|capfirst }} published{% endblock %}
 {% block body %}
 <div id="main">
-    {% if post.published %}
+    {% if content.published %}
         {% if draft %}
             <h1>Draft!</h1>
             <p>
                 Your changes have been saved as draft:
-                <a href="{{config.url_prefix}}/admin/post/preview/{{post.key.id}}" target="_blank">Preview</a>.
+                <a href="{{config.url_prefix}}/admin/{{ type }}/preview/{{content.key.id}}" target="_blank">Preview</a>.
             </p>
         {% else %}
             <h1>Published!</h1>
             <p>
-                Your post has been published:
-                <a href="{{config.url_prefix}}{{post.path}}" target="_blank">View</a>.
+                Your {{ type }} has been published:
+                <a href="{{config.url_prefix}}{{content.path}}" target="_blank">View</a>.
             </p>
         {% endif %}
     {% else %}
         <h1>Draft!</h1>
         <p>
             Your changes have been saved as draft:
-            <a href="{{config.url_prefix}}/admin/post/preview/{{post.key.id}}" target="_blank">Preview</a>.
+            <a href="{{config.url_prefix}}/admin/{{ type }}/preview/{{content.key.id}}" target="_blank">Preview</a>.
         </p>
     {% endif %}
 </div>

@@ -4,11 +4,16 @@ import logging
 import re
 import urllib
 from xml.etree import ElementTree
-from django.utils import simplejson
-from django.utils import html
+
 from google.appengine.api import urlfetch
 from google.appengine.ext import db
 from google.appengine.ext import deferred
+
+# Bloggart is currently based on Django 0.96
+from google.appengine.dist import use_library
+use_library('django', '0.96')
+from django.utils import simplejson
+from django.utils import html
 
 import config
 import fix_path

@@ -6,18 +6,7 @@ article.inlisting {
 }
 
 article.inlisting section {
-   font-size: 18px;
    color: #444;
-}
-
-article.inlisting section div.img,
-article.inlisting section img,
-article.inlisting section iframe,
-article.inlisting section object,
-article.inlisting section embed,
-article.inlisting section video {
-   /* Hide images, flash video, html5 video and other objects that ruin the listing */
-   display: none;
 }
 
 article.inlisting section div#meta {
@@ -31,14 +20,16 @@ article.inlisting section div#meta {
 article.inlisting section div#abstract {
    float: right;
    width: 494px;
-   border-left: 1px dashed #eee;
+   border-left: 1px solid #efefef;
    padding-left: 5px;
    line-height: 160%;
 }
 
 article.inlisting section div#meta time,
 article.inlisting section div#meta span {
-   height: 24px;
+   margin-bottom: 5px;
+   clear: both;
+   display: block;
 }
 
 article.inlisting .lefticon {
@@ -66,9 +57,10 @@ article.inlisting section div#meta span#comments {
 
 article.inlisting section div#abstract span#readmore {
    position: relative;
-   bottom: -20px;
+   bottom: 0px;
    right: 0;
    background: transparent url('/static/{{ config.theme }}/icons/more.png') center right no-repeat;
    text-align: right;
    display: block;
+   font-size: 14px;
 }

@@ -18,6 +18,11 @@ import utils
 
 HTTP_DATE_FMT = "%a, %d %b %Y %H:%M:%S GMT"
 
+TYPE_POST = 0x0001; # 'Post'
+TYPE_PAGE = 0x0002; # 'Page'
+TYPE_INDEX = 0x0004; # 'Index' (i.e. Listing, Pagination, Tag, Archive)
+TYPE_OTHER = 0x0008; # 'Other' (i.e. atom feed, robots.txt, ...)
+
 if config.google_site_verification is not None:
     ROOT_ONLY_FILES = ['/robots.txt','/' + config.google_site_verification]
 else:
@@ -28,13 +33,14 @@ class StaticContent(db.Model):
 
   The serving path for content is provided in the key name.
   """
-  body = db.BlobProperty()
-  content_type = db.StringProperty()
-  status = db.IntegerProperty(required=True, default=200)
-  last_modified = db.DateTimeProperty(required=True)
-  etag = aetycoon.DerivedProperty(lambda x: hashlib.sha1(x.body).hexdigest())
-  indexed = db.BooleanProperty(required=True, default=True)
-  headers = db.StringListProperty()
+  body = db.BlobProperty();
+  content_type = db.StringProperty();
+  status = db.IntegerProperty(required=True, default=200);
+  last_modified = db.DateTimeProperty(required=True);
+  etag = aetycoon.DerivedProperty(lambda x: hashlib.sha1(x.body).hexdigest());
+  indexed = db.BooleanProperty(required=True, default=True);
+  headers = db.StringListProperty();
+  type = db.IntegerProperty(choices=(TYPE_POST, TYPE_PAGE, TYPE_INDEX, TYPE_OTHER), default=TYPE_POST);
 
 
 def get(path):
@@ -45,7 +51,10 @@ def get(path):
   Returns:
     A StaticContent object, or None if no content exists for this path.
   """
-  entity = memcache.get(path)
+  entity = None;
+  if ( config.memcaching ): 
+    entity = memcache.get(path);
+    
   if entity:
     entity = db.model_from_protobuf(entity_pb.EntityProto(entity))
   else:
@@ -56,7 +65,7 @@ def get(path):
   return entity
 
 
-def set(path, body, content_type, indexed=True, **kwargs):
+def set(path, body, content_type, indexed=True, type=TYPE_POST, **kwargs):
   """Sets the StaticContent for the provided path.
 
   Args:
@@ -64,6 +73,7 @@ def set(path, body, content_type, indexed=True, **kwargs):
     body: The data to serve for that path.
     content_type: The MIME type to serve the content as.
     indexed: Index this page in the sitemap?
+    type: The type of StaticContent (a post? a page? an index?...).
     **kwargs: Additional arguments to be passed to the StaticContent constructor
   Returns:
     A StaticContent object.
@@ -74,11 +84,12 @@ def set(path, body, content_type, indexed=True, **kwargs):
   }
   defaults.update(kwargs)
   content = StaticContent(
-      key_name=path,
-      body=body,
-      content_type=content_type,
-      indexed=indexed,
-      **defaults)
+      key_name = path,
+      body = body,
+      content_type = content_type,
+      indexed = indexed,
+      type = type,
+      **defaults);
   content.put()
   memcache.replace(path, db.model_to_protobuf(content).Encode())
   try:
@@ -129,6 +140,8 @@ def canonical_redirect(func):
   return _dec
 
 class StaticContentHandler(webapp.RequestHandler):
+  PAGE_NOT_FOUND_404_PATH = "404.html";
+  
   def output_content(self, content, serve=True):
     if content.content_type:
       self.response.headers['Content-Type'] = content.content_type
@@ -149,19 +162,19 @@ class StaticContentHandler(webapp.RequestHandler):
     if not path.startswith(config.url_prefix):
       if path not in ROOT_ONLY_FILES:
         self.error(404)
-        self.response.out.write(utils.render_template('404.html'))
+        self.response.out.write(utils.render_template( StaticContentHandler.PAGE_NOT_FOUND_404_PATH ));
         return
     else:
       if config.url_prefix != '':
         path = path[len(config.url_prefix):]# Strip off prefix
         if path in ROOT_ONLY_FILES:# This lives at root
           self.error(404)
-          self.response.out.write(utils.render_template('404.html'))
+          self.response.out.write(utils.render_template( StaticContentHandler.PAGE_NOT_FOUND_404_PATH ));
           return
     content = get(path)
     if not content:
       self.error(404)
-      self.response.out.write(utils.render_template('404.html'))
+      self.response.out.write(utils.render_template( StaticContentHandler.PAGE_NOT_FOUND_404_PATH ));
       return
 
     serve = True

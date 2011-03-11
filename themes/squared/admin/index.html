@@ -3,10 +3,10 @@
 {% block body %}
 <div id="main">
     <script type="text/javascript">
-        function delete_post(id){
-            var decision = confirm("Are you sure you want to delete this post.");
+        function delete_content(id, content){
+            var decision = confirm("Are you sure you want to delete this content?");
             if(decision){
-                document.forms['delete_form_' + id].submit();
+                document.forms['delete_form_'+ content + '_' + id].submit();
                 return true;
             } else {
                 return false;
@@ -14,8 +14,8 @@
         }
     </script>
     <h1>All Posts</h1>
-    {% ifnotequal last_post -1 %}
-        <p>Posts {{offset|add:1}} to {{last_post|add:1}}</p>
+    {% ifnotequal posts_last_post -1 %}
+        <p>Posts {{posts_offset|add:1}} to {{posts_last_post|add:1}}</p>
         <table id="posts">
             <thead>
                 <tr><th>Title</th><th>Published</th><th>Actions</th></tr>
@@ -33,10 +33,10 @@
                       |
                     <a href="{{config.url_prefix}}/admin/post/{{post.key.id}}">Edit</a>
                     |
-                    <form id="delete_form_{{post.key.id}}" 
+                    <form id="delete_form_post_{{post.key.id}}" 
                     action="{{config.url_prefix}}/admin/post/delete/{{post.key.id}}" method="post" 
                     style="display:inline;margin:0;padding:0;background:none;border:none;">
-                    <a href="#" onclick="javascript:delete_post('{{post.key.id}}');">Delete</a>
+                    <a href="#" onclick="javascript:delete_content('{{post.key.id}}', 'post');">Delete</a>
                     </form>
                 </td>
             </tr>
@@ -49,16 +49,64 @@
         </p>
     {% endifnotequal %}
     
-    {% ifnotequal offset 0 %}
-        <a href="?start={{prev_offset}}&count={{count}}">&lt;- Previous</a>
+    {% ifnotequal posts_offset 0 %}
+        <a href="?pages_start={{pages_offset}}&pages_count={{pages_count}}&posts_start={{posts_prev_offset}}&posts_count={{posts_count}}">&lt;- Previous</a>
     {% endifnotequal %}
   
     {% if posts|length_is:count %}
-        <a href="?start={{next_offset}}&count={{count}}">Next -></a>
+        <a href="?pages_start={{pages_offset}}&pages_count={{pages_count}}&posts_start={{posts_next_offset}}&posts_count={{posts_count}}">Next -></a>
+    {% endif %}
+    
+    <hr />
+    
+    <h1>All Pages</h1>
+    {% ifnotequal pages_last_page -1 %}
+        <p>Pages {{pages_offset|add:1}} to {{pages_last_page|add:1}}</p>
+        <table id="pages">
+            <thead>
+                <tr><th>Title</th><th>Published</th><th>Actions</th></tr>
+            </thead>
+            {% for page in pages %}
+            <tr>
+                <td class="title"><a href="{{config.url_prefix}}/admin/page/{{page.key.id}}">{{page.title|escape}}</a></td>
+                <td class="published">{% if page.path %}{{page.published_tz|date:"Y-m-d"}}{% else %}Draft{% endif %}</td>
+                <td class="actions">
+                    {% if page.path %}
+                      <a href="{{config.url_prefix}}{{page.path}}">View</a>
+                    {% else %}
+                      <a href="{{config.url_prefix}}/admin/page/preview/{{page.key.id}}">Preview</a>
+                    {% endif %}
+                      |
+                    <a href="{{config.url_prefix}}/admin/page/{{page.key.id}}">Edit</a>
+                    |
+                    <form id="delete_form_page_{{page.key.id}}" 
+                    action="{{config.url_prefix}}/admin/page/delete/{{page.key.id}}" method="post" 
+                    style="display:inline;margin:0;padding:0;background:none;border:none;">
+                    <a href="#" onclick="javascript:delete_content('{{page.key.id}}', 'page');">Delete</a>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>
+            No pages yet.<br />
+            <a href="{{config.url_prefix}}/admin/newpage">Write your first page.</a>
+        </p>
+    {% endifnotequal %}
+    
+    {% ifnotequal pages_offset 0 %}
+        <a href="?posts_start={{posts_offset}}&posts_count={{posts_count}}&pages_start={{pages_prev_offset}}&pages_count={{pages_count}}">&lt;- Previous</a>
+    {% endifnotequal %}
+  
+    {% if pages|length_is:count %}
+        <a href="?posts_start={{posts_offset}}&posts_count={{posts_count}}&pages_start={{pages_next_offset}}&pages_count={{pages_count}}">Next -></a>
     {% endif %}
 
-  <h2>Admin Actions</h2>
-  <form method="post" action="{{config.url_prefix}}/admin/regenerate">
+    <hr />
+
+    <h2>Admin Actions</h2>
+    <form method="post" action="{{config.url_prefix}}/admin/regenerate">
       <label for="gen_list">Available content generators:</label><br />
       <select multiple="true" id="gen_list" name="generators">
           {% for gen in generators %}
@@ -66,6 +114,6 @@
           {% endfor %}
       </select><br />
       <input type="submit" value="Regenerate" />
-  </form>
+    </form>
 </div>
 {% endblock %}

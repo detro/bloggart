@@ -11,7 +11,7 @@ import config
 import markup
 import static
 import utils
-
+import models
 
 generator_list = []
 
@@ -63,11 +63,12 @@ class ContentGenerator(object):
 class PostContentGenerator(ContentGenerator):
   """ContentGenerator for the actual blog post itself."""
 
-  can_defer = False
+  can_defer = True;
 
   @classmethod
-  def get_resource_list(cls, post):
-    return [post.key().id()]
+  def get_resource_list(cls, content):
+    # Return post key only if content is of kind 'BlogPost'
+    return [content.key().id()] if content.kind() == "BlogPost" else [];
 
   @classmethod
   def get_etag(cls, post):
@@ -76,8 +77,6 @@ class PostContentGenerator(ContentGenerator):
   @classmethod
   def get_prev_next(cls, post):
     """Retrieves the chronologically previous and next post for this post"""
-    import models
-
     q = models.BlogPost.all().order('-published')
     q.filter('published !=', datetime.datetime.max)# Filter drafts out
     q.filter('published <', post.published)
@@ -91,40 +90,76 @@ class PostContentGenerator(ContentGenerator):
     return prev,next
 
   @classmethod
-  def generate_resource(cls, post, resource, action='post'):
-    import models
+  def generate_resource(cls, post, resource, action='post'):    
     if not post:
-      post = models.BlogPost.get_by_id(resource)
+      post = models.BlogPost.get_by_id(resource);
     else:
-      assert resource == post.key().id()
-    # Handle deletion
-    if action == 'delete':
-      static.remove(post.path)
-      return
-    template_vals = {
-        'post': post,
-    }
-    prev, next = cls.get_prev_next(post)
-    if prev is not None:
-      template_vals['prev']=prev
-    if next is not None:
-      template_vals['next']=next
-    rendered = utils.render_template("post.html", template_vals)
-    static.set(post.path, rendered, config.html_mime_type)
+      assert resource == post.key().id();
+      
+    if ( post ):
+      # Handle deletion
+      if action == 'delete':
+        static.remove(post.path);
+        post.delete();
+        return;
+      template_vals = { 'post': post };
+      prev, next = cls.get_prev_next(post);
+      if prev is not None:
+        template_vals['prev'] = prev;
+      if next is not None:
+        template_vals['next'] = next;
+      rendered = utils.render_template("post.html", template_vals);
+      static.set(post.path, rendered, config.html_mime_type);
 generator_list.append(PostContentGenerator)
+
+
+class PageContentGenerator(ContentGenerator):
+  """ContentGenerator for pages."""
+
+  can_defer = True;
+
+  @classmethod
+  def get_resource_list(cls, content):
+    resource_list = [];
+    
+    if ( content.kind() == "Page" ):
+      # All the pages are potentially affected by other pages changing (i.e. pages links)
+      return [page.key().id() for page in models.Page.all()];
+  
+  @classmethod
+  def get_etag(cls, page):
+    return page.hash;
+
+  @classmethod
+  def generate_resource(cls, page, resource, action='post'):    
+    curr_page = models.Page.get_by_id(resource);
+      
+    if ( curr_page ):
+      # Handle deletion
+      if action == 'delete':
+        static.remove(curr_page.path);
+        curr_page.delete();
+        return;
+      template_vals = { 'page': curr_page };
+      rendered = utils.render_template("page.html", template_vals);
+      static.set(curr_page.path, rendered, config.html_mime_type);
+generator_list.append(PageContentGenerator);
+
 
 class PostPrevNextContentGenerator(PostContentGenerator):
   """ContentGenerator for the blog posts chronologically before and after the blog post."""
 
   @classmethod
-  def get_resource_list(cls, post):
-    prev, next = cls.get_prev_next(post)
-    resource_list = [res.key().id() for res in (prev,next) if res is not None]
-    return resource_list
+  def get_resource_list(cls, content):
+    if ( content.kind() == "BlogPost" ):
+      prev, next = cls.get_prev_next(content);
+      resource_list = [res.key().id() for res in (prev,next) if res is not None];
+      return resource_list;
+    else:
+      return [];
 
   @classmethod
   def generate_resource(cls, post, resource):
-    import models
     post = models.BlogPost.get_by_id(resource)
     if post is None:
       return
@@ -140,6 +175,7 @@ class PostPrevNextContentGenerator(PostContentGenerator):
     static.set(post.path, rendered, config.html_mime_type)
 generator_list.append(PostPrevNextContentGenerator)
 
+
 class ListingContentGenerator(ContentGenerator):
   path = None
   """The path for listing pages."""
@@ -148,8 +184,11 @@ class ListingContentGenerator(ContentGenerator):
   """The path for the first listing page."""
 
   @classmethod
-  def get_etag(cls, post):
-    return post.summary_hash
+  def get_etag(cls, content):
+    if ( content.kind() == "BlogPost" ):
+      return content.summary_hash;
+    else:
+      return None;
 
   @classmethod
   def _filter_query(cls, resource, q):
@@ -163,7 +202,6 @@ class ListingContentGenerator(ContentGenerator):
 
   @classmethod
   def generate_resource(cls, post, resource, pagenum=1, start_ts=None):
-    import models
     q = models.BlogPost.all().order('-published')
     q.filter('published <', start_ts or datetime.datetime.max)
     cls._filter_query(resource, q)
@@ -189,7 +227,7 @@ class ListingContentGenerator(ContentGenerator):
     rendered = utils.render_template("listing.html", template_vals)
 
     path_args['pagenum'] = pagenum
-    static.set(_get_path() % path_args, rendered, config.html_mime_type)
+    static.set(_get_path() % path_args, rendered, config.html_mime_type, type=static.TYPE_INDEX);
     if more_posts:
         deferred.defer(cls.generate_resource, None, resource, pagenum + 1,
                        posts[-2].published)
@@ -214,8 +252,9 @@ class TagsContentGenerator(ListingContentGenerator):
   first_page_path = '/tag/%(resource)s'
 
   @classmethod
-  def get_resource_list(cls, post):
-    return post.normalized_tags
+  def get_resource_list(cls, content):
+    # Return normalized tags only if content is of kind 'BlogPost'
+    return content.normalized_tags if content.kind() == "BlogPost" else [];
 
   @classmethod
   def _filter_query(cls, resource, q):
@@ -233,14 +272,13 @@ class ArchivePageContentGenerator(ListingContentGenerator):
   first_page_path = '/archive/%(resource)s/'
 
   @classmethod
-  def get_resource_list(cls, post):
-    from models import BlogDate
-    return [BlogDate.get_key_name(post)]
+  def get_resource_list(cls, content):
+    # Return a BlogDate only if content is of kind "BlogPost"
+    return [models.BlogDate.get_key_name(content)] if content.kind() == "BlogPost" else [];
 
   @classmethod
   def _filter_query(cls, resource, q):
-    from models import BlogDate
-    ts = BlogDate.datetime_from_key_name(resource)
+    ts = models.BlogDate.datetime_from_key_name(resource)
 
     # We don't have to bother clearing hour, min, etc., as
     # datetime_from_key_name() only sets the year and month.
@@ -264,8 +302,9 @@ class ArchiveIndexContentGenerator(ContentGenerator):
   """
 
   @classmethod
-  def get_resource_list(cls, post):
-    return ["archive"]
+  def get_resource_list(cls, content):
+    # Return ['archive'] only if content is of kind "BlogPost"
+    return ["archive"];
 
   @classmethod
   def get_etag(cls, post):
@@ -273,9 +312,7 @@ class ArchiveIndexContentGenerator(ContentGenerator):
 
   @classmethod
   def generate_resource(cls, post, resource):
-    from models import BlogDate
-
-    q = BlogDate.all().order('-__key__')
+    q = models.BlogDate.all().order('-__key__')
     dates = [x.date for x in q]
     date_struct = {}
     for date in dates:
@@ -286,7 +323,7 @@ class ArchiveIndexContentGenerator(ContentGenerator):
       'dates': dates,
       'date_struct': date_struct.values(),
     })
-    static.set('/archive/', str, config.html_mime_type)
+    static.set('/archive/', str, config.html_mime_type, type=static.TYPE_INDEX);
 generator_list.append(ArchiveIndexContentGenerator)
 
 
@@ -295,7 +332,7 @@ class AtomContentGenerator(ContentGenerator):
 
   @classmethod
   def get_resource_list(cls, post):
-    return ["atom"]
+    return ["atom"];
 
   @classmethod
   def get_etag(cls, post):
@@ -303,7 +340,6 @@ class AtomContentGenerator(ContentGenerator):
 
   @classmethod
   def generate_resource(cls, post, resource):
-    import models
     q = models.BlogPost.all().order('-updated')
     # Fetch the 10 most recently updated non-draft posts
     posts = list(itertools.islice((x for x in q if x.path), 10))
@@ -313,9 +349,12 @@ class AtomContentGenerator(ContentGenerator):
         'updated': now,
     }
     rendered = utils.render_template("atom.xml", template_vals)
-    static.set('/feeds/atom.xml', rendered,
-               'application/atom+xml; charset=utf-8', indexed=False,
-               last_modified=now)
+    static.set('/feeds/atom.xml',
+      rendered,
+      'application/atom+xml; charset=utf-8',
+      indexed=False,
+      type=static.TYPE_OTHER,
+      last_modified=now);
     if config.hubbub_hub_url:
       cls.send_hubbub_ping(config.hubbub_hub_url)
 

@@ -6,6 +6,9 @@ from google.appengine.api import memcache
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.template import _swap_settings
 
+# Bloggart is currently based on Django 0.96
+from google.appengine.dist import use_library
+use_library('django', '0.96')
 import django.conf
 from django import template
 from django.template import loader
@@ -28,6 +31,14 @@ def slugify(s):
   return re.sub('[^a-zA-Z0-9-]+', '-', s).strip('-')
 
 
+def format_page_path(page, num):
+    slug = format_page_path(page.parent_page, 0) if page.parent_page else "";
+    slug += '/' + slugify(page.title);
+    if num > 0:
+        slug += "-" + str(num);
+    return slug;
+
+
 def format_post_path(post, num):
   slug = slugify(post.title)
   if num > 0:
@@ -42,13 +53,17 @@ def format_post_path(post, num):
 
 
 def get_template_vals_defaults(template_vals=None):
-  if template_vals is None:
-    template_vals = {}
-  template_vals.update({
-      'config': config,
-      'devel': os.environ['SERVER_SOFTWARE'].startswith('Devel'),
-  })
-  return template_vals
+    import models;
+    
+    if template_vals is None:
+        template_vals = {}
+    
+    template_vals.update({
+        'config': config,
+        'devel': os.environ['SERVER_SOFTWARE'].startswith('Devel'),
+        'top_pages' : models.Page.all().filter("parent_page = ", None)
+    });
+    return template_vals;
 
 
 def render_template(template_name, template_vals=None, theme=None):
@@ -84,14 +99,15 @@ def _regenerate_sitemap():
   from StringIO import StringIO
   paths = _get_all_paths()
   rendered = render_template('sitemap.xml', {'paths': paths})
-  static.set('/sitemap.xml', rendered, 'application/xml', False)
+  static.set('/sitemap.xml', rendered, 'application/xml', False, type=static.TYPE_OTHER)
   s = StringIO()
   gzip.GzipFile(fileobj=s,mode='wb').write(rendered)
   s.seek(0)
   renderedgz = s.read()
-  static.set('/sitemap.xml.gz',renderedgz, 'application/x-gzip', False)
-  if config.google_sitemap_ping:
-      ping_googlesitemap()
+  static.set('/sitemap.xml.gz',renderedgz, 'application/x-gzip', False, type=static.TYPE_OTHER)
+  # Ping Google only if configured to do so and NOT on localhost
+  if ( config.google_sitemap_ping and not (config.host.find("localhost") > -1) ):
+    ping_googlesitemap();
 
 def ping_googlesitemap():
   import urllib
@@ -141,39 +157,51 @@ def tz_field(property):
     return property
 
 
-class memoize_post(object):
+class memoize_content(object):
   """
-  A memcache-based memoizer for BlogPosts; keys are the post's path.
+  A memcache-based memoizer for content; keys are the content's path.
   """
   def __init__(self, namespace):
     self.namespace = namespace
 
   def __call__(self, func):
-    def _dec(post):
-      if post.path:
-        data = memcache.get(post.path, namespace=self.namespace)
+    def _dec(content):
+      if content.path:
+        data = None;
+        if ( config.memcaching ):
+          data = memcache.get(content.path, namespace=self.namespace);
+          
         if data:
           return data
         else:
-          data = func(post)
-          memcache.set(post.path, data, namespace=self.namespace)
+          data = func(content)
+          memcache.set(content.path, data, namespace=self.namespace)
           return data
       else:
-        return func(post)
+        return func(content)
     return _dec
 
-  def delete(self, post):
-    if post.path:
-      memcache.delete(post.path, namespace=self.namespace)
+  def delete(self, content):
+    if content.path:
+      memcache.delete(content.path, namespace=self.namespace)
 
+# BlogPost Memoizers
+post_body_memoizer = memoize_content('BlogPost.rendered');
+post_summary_memoizer = memoize_content('BlogPost.summary');
+post_hash_memoizer = memoize_content('BlogPost.hash');
+post_summary_hash_memoizer = memoize_content('BlogPost.summary_hash');
 
-body_memoizer = memoize_post('BlogPost.rendered')
-summary_memoizer = memoize_post('BlogPost.summary')
-hash_memoizer = memoize_post('BlogPost.hash')
-summary_hash_memoizer = memoize_post('BlogPost.summary_hash')
+# Page Memoizers
+page_body_memoizer = memoize_content('Page.rendered');
+page_hash_memoizer = memoize_content('Page.hash');
 
-def clear_memoizer_cache(post):
-  body_memoizer.delete(post)
-  summary_memoizer.delete(post)
-  hash_memoizer.delete(post)
-  summary_hash_memoizer.delete(post)
+def clear_post_memoizer_cache(post):
+    post_body_memoizer.delete(post);
+    post_summary_memoizer.delete(post);
+    post_hash_memoizer.delete(post);
+    post_summary_hash_memoizer.delete(post);
+  
+def clear_page_memoizer_cache(page):
+    page_body_memoizer.delete(page);
+    page_hash_memoizer.delete(page);
+

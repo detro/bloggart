@@ -1,0 +1,20 @@
+{% extends "admin/base.html" %}
+{% block title %}{% if form.instance %}Edit{% else %}New{% endif %} Page{% endblock %}
+
+{% block body %}
+<div id="main">
+    <h1>{% if form.instance %}Edit{% else %}New{% endif %} Page</h1>
+    <form method="post" action="">
+        <table id="form">
+            {{form}}
+            <tr>
+                <th class="transparent">&nbsp;</th>
+                <td><input type="submit" value="Save Page" /></td>
+            </tr>
+        </table>
+
+    </form>
+    
+    {% include "admin/edit_notes.html" %}
+</div>
+{% endblock %}

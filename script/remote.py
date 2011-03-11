@@ -4,6 +4,10 @@ import getpass
 import os
 import sys
 
+# Bloggart is currently based on Django 0.96
+from google.appengine.dist import use_library
+use_library('django', '0.96')
+
 ## Application specific
 SDK_DIR = '/usr/local/google_appengine'
 APP_DIR = '/home/aht/src/bloggart'
