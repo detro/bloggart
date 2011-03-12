@@ -4,23 +4,31 @@
 
 {% block body %}
 <div id="main">
-    <article class="inpost">
-        <header class="clearfix">
-            <h1><a href="{{ config.url_prefix }}{{ post.path }}">{{ post.title|escape }}</a></h1>
-            <time class="lefticon" datetime="{{ post.updated_tz|date:"Y-m-d" }}">{{ post.updated_tz|date:config.date_format }}</time>
-            <span class="righticon" id="comments"><a href="{{ config.url_prefix }}{{ post.path }}#disqus_thread">Comments</a></span>
-            {% if post.tags %}
-            <span class="righticon" id="tags">
-                {% for tag in post.tag_pairs %}
-                <a href="{{ config.url_prefix }}/tag/{{ tag.1|escape }}">{{ tag.0|escape }}</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}
-            </span>
-            {% endif %}
+	<article class="content clearfix">
+        <header>
+            <h1>{{ post.title|escape }}</h1>
         </header>
-        <section class="serif">
+		<section class="serif">
+			<ul class="meta sans">
+	            <li class="datetime">
+	                <time datetime="{{ post.published_tz|date:"Y-m-d" }}" pubdate="pubdate">
+	                    {{ post.published_tz|date:config.date_format }}
+	                </time>
+	            </li>
+	            <li class="comments">
+	                <a href="{{ config.url_prefix }}{{ post.path }}#disqus_thread">Comments</a>
+	            </li>
+	            {% if post.tags %}
+	            <li class="tags">
+	            {% for tag in post.tag_pairs %}
+	                <a href="{{ config.url_prefix }}/tag/{{ tag.1|escape }}">{{ tag.0|escape }}</a>{% if not forloop.last %},{% endif %}
+	            {% endfor %}
+	            </li>
+	            {% endif %}
+	        </ul><!-- end of ul.meta -->
             {{post.rendered}}
         </section>
-    </article>
+    </article><!-- end of article.content -->
     
     {% if config.sharing_buttons %}
         <div id="share_buttons">

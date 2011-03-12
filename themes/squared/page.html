@@ -4,14 +4,14 @@
 
 {% block body %}
 <div id="main">
-    <article class="inpost">
-        <header class="clearfix">
-            <h1><a href="{{ config.url_prefix }}{{ page.path }}">{{ page.title|escape }}</a></h1>
+    <article class="content clearfix">
+        <header>
+            <h1>{{ post.title|escape }}</h1>
         </header>
         <section class="serif">
-            {{ page.rendered }}
+            {{post.rendered}}
         </section>
-    </article>
+    </article><!-- end of article.content -->
 </div><!-- end of #main -->
 
 {% endblock %}

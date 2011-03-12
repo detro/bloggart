@@ -3,25 +3,28 @@
 {% block body %}
 <div id="main">
     {% for post in posts %}
-    <article class="inlisting clearfix">
-        <section class="clearfix">
-            <div id="meta" class="clearfix">
-                <time class="lefticon" datetime="{{ post.published_tz|date:"Y-m-d" }}">{{ post.published_tz|date:config.date_format }}</time>
-                <span class="lefticon" id="comments"><a href="{{ config.url_prefix }}{{ post.path }}#disqus_thread">Comments</a></span>
-                {% if post.tags %}
-                <span class="lefticon clearfix" id="tags">
-                    {% for tag in post.tag_pairs %}
-                    <a href="{{ config.url_prefix }}/tag/{{ tag.1|escape }}">{{ tag.0|escape }}</a>{% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                </span>
-                {% endif %}
-            </div>
-            <div id="abstract" class="serif">
-                <header><h1><a href="{{ config.url_prefix }}{{ post.path }}">{{ post.title|escape }}</a></h1></header>
-                <span class="righticon clearfix sans" id="readmore"><a href="{{ config.url_prefix }}{{ post.path }}">Read more...</a></span>
-            </div>
-        </section>
-    </article>
+    <article class="listing clearfix">
+    	<ul class="meta">
+            <li class="datetime">
+                <time datetime="{{ post.published_tz|date:"Y-m-d" }}" pubdate="pubdate">
+                	{{ post.published_tz|date:config.date_format }}
+				</time>
+            </li>
+            <li class="comments">
+                <a href="{{ config.url_prefix }}{{ post.path }}#disqus_thread">Comments</a>
+            </li>
+            {% if post.tags %}
+            <li class="tags">
+            {% for tag in post.tag_pairs %}
+                <a href="{{ config.url_prefix }}/tag/{{ tag.1|escape }}">{{ tag.0|escape }}</a>{% if not forloop.last %},{% endif %}
+            {% endfor %}
+            </li>
+            {% endif %}
+        </ul><!-- end of ul.meta -->
+    	<header>
+			<h1><a href="{{ config.url_prefix }}{{ post.path }}">{{ post.title|escape }}</a></h1>
+		</header>
+    </article><!-- end of article.listing -->
     {% endfor %}
 </div><!-- end of #main -->
 

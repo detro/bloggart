@@ -1,66 +1,13 @@
-/* --------------------------------- article.inlisting */
-article.inlisting {
-   margin: 40px 0 0 0;
-   background: transparent;
-   color: black;
+/* --------------------------------- article.listing */
+article.listing {
+	margin: 30px 0;
 }
 
-article.inlisting section {
-   color: #444;
+article.listing ul.meta {
+	float: left;
 }
 
-article.inlisting section div#meta {
-   float: left;
-   width: 215px;
-   padding-right: 5px;
-   color: #aaa;
-   font-size: 14px;
-}
-
-article.inlisting section div#abstract {
-   float: right;
-   width: 494px;
-   border-left: 1px solid #efefef;
-   padding-left: 5px;
-   line-height: 160%;
-}
-
-article.inlisting section div#meta time,
-article.inlisting section div#meta span {
-   margin-bottom: 5px;
-   clear: both;
-   display: block;
-}
-
-article.inlisting .lefticon {
-   padding: 0px 0 0px 22px;
-   float: left;
-}
-
-article.inlisting .righticon {
-   padding: 6px 22px 0 0;
-   float: right;
-}
-
-article.inlisting section div#meta time {
-   background: transparent url('/static/{{ config.theme }}/icons/clock.png') top left no-repeat;
-}
-
-article.inlisting section div#meta span#tags {
-   background: transparent url('/static/{{ config.theme }}/icons/tag.png') top left no-repeat;
-   height: auto;
-}
-
-article.inlisting section div#meta span#comments {
-   background: transparent url('/static/{{ config.theme }}/icons/comments.png') top left no-repeat;
-}
-
-article.inlisting section div#abstract span#readmore {
-   position: relative;
-   bottom: 0px;
-   right: 0;
-   background: transparent url('/static/{{ config.theme }}/icons/more.png') center right no-repeat;
-   text-align: right;
-   display: block;
-   font-size: 14px;
+article.listing header {
+	float: right;
+	width: 494px;
 }

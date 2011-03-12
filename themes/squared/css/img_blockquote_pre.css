@@ -1,0 +1,76 @@
+/* --------------------------------- div.img, blockquote, pre */
+div.img {
+   margin: 20px 0;
+   text-align: center;
+   font-size: 16px;
+   color: #611;
+   font-style: italic;
+}
+
+div.img img, blockquote {
+   background: #fafafa;
+   background: linear-gradient(top, #fafafa, #eee);
+   background: -moz-linear-gradient(top, #fafafa 0%, #eee 100%);
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fafafa), color-stop(100%,#eee));
+   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa', endColorstr='#eeeeee', GradientType=0);
+   
+   border-top: 1px solid #fff;
+   border-left: 1px solid #ddd;
+   border-right: 1px solid #ddd;
+   border-bottom: 1px solid #ddd;
+   
+   border-radius: 5px;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+   
+   box-shadow: 0 0 5px #ddd;
+   -o-box-shadow: 0 0 5px #ddd;
+   -webkit-box-shadow: 0 0px 5px #ddd;
+   -moz-box-shadow: 0 0 5px #ddd;
+   
+   text-shadow: 0 1px 0 #fff;
+}
+
+div.img img {
+   padding: 15px;
+   margin: 10px auto;
+   display: block;
+   clear: both;
+   font-size: 110%;
+}
+
+blockquote {
+   font-style: italic;
+   padding: 10px 20px;
+   margin: 10px 0;
+}
+
+div.linenodiv pre, div.highlight pre {
+    font-size: 11px;
+    margin: 0;
+    white-space: pre;
+    font-family: 'Monaco', 'Courier New', 'Courier', monospace;
+}
+
+div.linenodiv pre {
+    width: 30px;
+    text-align: right;
+	padding: 3px 5px 3px 0;
+}
+
+div.highlight pre {   
+   background-color: #fafafa;
+   padding: 3px 5px;
+   
+   border-top: 1px solid #fff;
+   border-left: 1px solid #ddd;
+   border-right: 1px solid #ddd;
+   border-bottom: 1px solid #ddd;
+  
+   box-shadow: 0 0 5px #ddd;
+   -o-box-shadow: 0 0 5px #ddd;
+   -webkit-box-shadow: 0 0px 5px #ddd;
+   -moz-box-shadow: 0 0 5px #ddd;
+   
+   text-shadow: 0 1px 0 #fff;
+}
