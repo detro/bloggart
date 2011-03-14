@@ -28,18 +28,18 @@
     {% endfor %}
 </div><!-- end of #main -->
 
-<div id="bottomnavigation" class="clearfix">
+<div class="pagination clearfix">
     {% if next_page %}
-    <span id="olderlink" class="lefticon">
+    <span class="prevlink lefticon">
         <a href="{{ config.url_prefix }}{{ next_page }}">Older</a>
     </span>
     {% endif %}
     {% if prev_page %}
-    <span id="newerlink" class="righticon">
+    <span class="nextlink righticon">
         <a href="{{ config.url_prefix }}{{ prev_page }}">Newer</a>
     </span>
     {% endif %}
-</div><!-- end of #navigation -->
+</div><!-- end of div.pagination -->
 
 {% if config.disqus_forum %}
 <script type="text/javascript">

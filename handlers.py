@@ -10,6 +10,7 @@ import markup
 import models
 import post_deploy
 import utils
+from generators import generator_list
 
 # Bloggart is currently based on Django 0.96
 from google.appengine.dist import use_library
@@ -90,12 +91,14 @@ class BaseHandler(webapp.RequestHandler):
 
 class AdminHandler(BaseHandler):
   def get(self):
-    from generators import generator_list
+    # Entry per page
+    entry_per_page = 10
+    
     posts_offset = int(self.request.get('posts_start', 0));
-    posts_count = int(self.request.get('posts_count', 20));
+    posts_count = int(self.request.get('posts_count', entry_per_page));
     posts = models.BlogPost.all().order('-published').fetch(posts_count, posts_offset);
     pages_offset = int(self.request.get('pages_start', 0));
-    pages_count = int(self.request.get('pages_count', 20));
+    pages_count = int(self.request.get('pages_count', entry_per_page));
     pages = models.Page.all().order('-published').fetch(pages_count, pages_offset);
     template_vals = {
         'posts_offset': posts_offset,
@@ -191,10 +194,10 @@ class PageHandler(BaseHandler):
     if form.is_valid():
       page = form.save(commit=False);
       
-      # Ensure that a 'Child Page' is never asigned as 'Parent Page' as well
+      # Ensure that a 'Child Page' is never assigned as 'Parent Page' as well
       page.put();
       for p in page.child_pages:
-        if ( page.parent_page.key() == p.key() ):
+        if page.parent_page and page.parent_page.key() == p.key():
           page.parent_page = None;
           page.put();
           break;
@@ -235,15 +238,10 @@ class PreviewPageHandler(BaseHandler):
 
 class RegenerateHandler(BaseHandler):
   def post(self):
-    # Get which "generator" the User requested to run
-    generators = self.request.get_all("generators");
+    # Force the regeneration of all the content
+    post_deploy.regenerate_all(force=True)
     
-    # Launch a deferred task for Regeneration
-    deferred.defer(post_deploy.PostRegenerator().regenerate, classes=generators);
-    # Launch a deferred task for Regeneration
-    deferred.defer(post_deploy.PageRegenerator().regenerate, classes=generators);
-    
-    # Post-Deploy tasks
+    # Post-Deploy tasks (i.e. regenerate static pages)
     deferred.defer(post_deploy.try_post_deploy, force=True);
 
     # Render a "regenerating" page 

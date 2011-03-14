@@ -6,10 +6,22 @@
 <div id="main">
     <article class="content clearfix">
         <header>
-            <h1>{{ post.title|escape }}</h1>
+            {% for bcp in breadcrumb_stack reversed %}
+			{% if forloop.first %}<span class="breadcrumb">{% endif %}
+                <a href="{{ bcp.path }}">{{ bcp.title }}</a>
+				{% if not forloop.last %} &raquo; {% endif %}
+		    {% if forloop.last %}</span>{% endif %}
+			{% endfor %}
+            <h1>{{ page.title|escape }}</h1>
+			{% for cp in page.child_pages %}
+            {% if forloop.first %}<span class="breadcrumb">{% endif %}
+                <a href="{{ cp.path }}">{{ cp.title }}</a>
+                {% if not forloop.last %} &sim; {% endif %}
+            {% if forloop.last %}</span>{% endif %}
+            {% endfor %}
         </header>
         <section class="serif">
-            {{post.rendered}}
+            {{ page.rendered }}
         </section>
     </article><!-- end of article.content -->
 </div><!-- end of #main -->

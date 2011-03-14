@@ -1,7 +1,10 @@
 import datetime
 import os
+import logging
+
 from google.appengine.api.labs import taskqueue
 from google.appengine.ext import deferred
+from google.appengine.runtime import DeadlineExceededError
 
 import config
 import models
@@ -13,56 +16,41 @@ BLOGGART_VERSION = (1, 0, 1)
 
 
 """
-Page content regenerator.
+Content Regenerator
 """
-class PageRegenerator(object):
+class ContentRegenerator(object):
   def __init__(self):
-    self.seen = set()
+    self.processed = set()
 
-  def regenerate(self, batch_size=50, start_ts=None, classes=None):
-    q = models.Page.all().order('-published');
-    q.filter('published <', start_ts or datetime.datetime.max);
-    pages = q.fetch(batch_size);
-    # For every Page published before 'start_ts'
-    for page in pages:
-      # For every Page dependency
-      for generator_class, deps in page.get_deps(True):
-        # Check if 'generator_class' is part of the kind of content to regenerate
-        if classes and (not generator_class.__name__ in classes):
-          continue;
-        # For every dependency
-        for dep in deps:
-          # Ensure a generator is never used twice
-          if (generator_class.__name__, dep) not in self.seen:
-            self.seen.add((generator_class.__name__, dep));
-            # Create a Deferred Taask for the regeneration
-            deferred.defer(generator_class.generate_resource, None, dep);
-      # Save the current Page info
-      page.put();
-    # If there are still pages to regenerate, launch a new Deferred Task
-    if len(pages) == batch_size:
-      deferred.defer(self.regenerate, batch_size, pages[-1].published)
-
-
-class PostRegenerator(object):
-  def __init__(self):
-    self.seen = set()
-
-  def regenerate(self, batch_size=50, start_ts=None, classes=None):
-    q = models.BlogPost.all().order('-published')
+  def regenerate(self, batch_size=30, start_ts=None, content_model=models.BlogPost):
+    # Fetch 'batch_size" contents, with 'published' date before 'start_ts'
+    q = content_model.all().order('-published')
     q.filter('published <', start_ts or datetime.datetime.max)
-    posts = q.fetch(batch_size)
-    for post in posts:
-      for generator_class, deps in post.get_deps(True):
-        if classes and (not generator_class.__name__ in classes):
-          continue
-        for dep in deps:
-          if (generator_class.__name__, dep) not in self.seen:
-            self.seen.add((generator_class.__name__, dep))
-            deferred.defer(generator_class.generate_resource, None, dep)
-      post.put()
-    if len(posts) == batch_size:
-      deferred.defer(self.regenerate, batch_size, posts[-1].published)
+    contents = q.fetch(batch_size)
+    
+    try:
+      # For every content fetched
+      for content in contents:
+        # Calculate their dependencies
+        for generator_class, deps in content.get_deps(True):
+          for dep in deps:
+            # If the current dependency was not processed before
+            if (generator_class.__name__, dep) not in self.processed:
+              try:
+                # (try to) regenerate dependency
+                generator_class.generate_resource(None, dep)
+              except Exception as e:
+                logging.error("Dependency regeneration failed: " + e)
+                logging.error(dep)
+                
+              # Remember not to process this dependency again              
+              self.processed.add((generator_class.__name__, dep))
+        
+        # Store timespamp for the last processed content
+        start_ts = content.published
+    except DeadlineExceededError:
+      # Continue from the last Content that failed to be regenerated
+      deferred.defer(self.regenerate, batch_size, start_ts)
 
 
 post_deploy_tasks = []
@@ -72,7 +60,7 @@ def generate_static_pages(pages):
   def generate(previous_version):
     for path, template, indexed, type in pages:
       rendered = utils.render_template(template)
-      static.set(path, rendered, config.html_mime_type, indexed, type=type);
+      static.set(path, rendered, config.html_mime_type, indexed=indexed, type=type);
   return generate
 
 post_deploy_tasks.append(generate_static_pages([
@@ -81,11 +69,18 @@ post_deploy_tasks.append(generate_static_pages([
     ('/robots.txt', 'robots.txt', False, static.TYPE_OTHER),
 ]));
 
-
-def regenerate_all(previous_version):
-  if (previous_version.bloggart_major, previous_version.bloggart_minor, previous_version.bloggart_rev,) < BLOGGART_VERSION:
-    deferred.defer(PostRegenerator().regenerate);
-    deferred.defer(PageRegenerator().regenerate);
+# Regenerate all the Content
+def regenerate_all(previous_version=None, force=False):
+  if (previous_version and
+      (previous_version.bloggart_major,
+      previous_version.bloggart_minor,
+      previous_version.bloggart_rev) < BLOGGART_VERSION) or force:
+    # Defer all BlogPost regeneration
+    deferred.defer(ContentRegenerator().regenerate, content_model=models.BlogPost)
+    # Defer all Page regeneration
+    deferred.defer(ContentRegenerator().regenerate, content_model=models.Page)
+    # Regenerate the Sitemap
+    static.regenerate_sitemap()
 
 post_deploy_tasks.append(regenerate_all);
 
@@ -93,7 +88,7 @@ post_deploy_tasks.append(regenerate_all);
 def site_verification(previous_version):
   static.set('/' + config.google_site_verification,
              utils.render_template('site_verification.html'),
-             config.html_mime_type, False)
+             config.html_mime_type, indexed=False)
 
 if config.google_site_verification:
   post_deploy_tasks.append(site_verification)

@@ -48,14 +48,20 @@
             <a href="{{config.url_prefix}}/admin/newpost">Write your first post.</a>
         </p>
     {% endifnotequal %}
-    
-    {% ifnotequal posts_offset 0 %}
-        <a href="?pages_start={{pages_offset}}&pages_count={{pages_count}}&posts_start={{posts_prev_offset}}&posts_count={{posts_count}}">&lt;- Previous</a>
-    {% endifnotequal %}
-  
-    {% if posts|length_is:count %}
-        <a href="?pages_start={{pages_offset}}&pages_count={{pages_count}}&posts_start={{posts_next_offset}}&posts_count={{posts_count}}">Next -></a>
-    {% endif %}
+	
+	<div class="pagination clearfix">
+        {% ifnotequal posts_offset 0 %}
+        <span class="prevlink lefticon">
+            <a href="?pages_start={{pages_offset}}&pages_count={{pages_count}}&posts_start={{posts_prev_offset}}&posts_count={{posts_count}}">Newer posts</a>
+        </span>
+        {% endifnotequal %}
+        {% if posts|length_is:posts_count %}
+        <span class="nextlink righticon">
+            <a href="?pages_start={{pages_offset}}&pages_count={{pages_count}}&posts_start={{posts_next_offset}}&posts_count={{posts_count}}">Older posts</a>
+        </span>
+        {% endif %}
+    </div><!-- end of div.pagination -->
+	
     
     <hr />
     
@@ -94,26 +100,25 @@
             <a href="{{config.url_prefix}}/admin/newpage">Write your first page.</a>
         </p>
     {% endifnotequal %}
-    
-    {% ifnotequal pages_offset 0 %}
-        <a href="?posts_start={{posts_offset}}&posts_count={{posts_count}}&pages_start={{pages_prev_offset}}&pages_count={{pages_count}}">&lt;- Previous</a>
-    {% endifnotequal %}
-  
-    {% if pages|length_is:count %}
-        <a href="?posts_start={{posts_offset}}&posts_count={{posts_count}}&pages_start={{pages_next_offset}}&pages_count={{pages_count}}">Next -></a>
-    {% endif %}
+	
+    <div class="pagination clearfix">
+        {% ifnotequal pages_offset 0 %}
+        <span class="prevlink lefticon">
+            <a href="?posts_start={{posts_offset}}&posts_count={{posts_count}}&pages_start={{pages_prev_offset}}&pages_count={{pages_count}}">Newer pages</a>
+        </span>
+        {% endifnotequal %}
+        {% if pages|length_is:pages_count %}
+        <span class="nextlink righticon">
+            <a href="?posts_start={{posts_offset}}&posts_count={{posts_count}}&pages_start={{pages_next_offset}}&pages_count={{pages_count}}">Older pages</a>
+        </span>
+        {% endif %}
+    </div><!-- end of div.pagination -->
 
     <hr />
 
     <h2>Admin Actions</h2>
     <form method="post" action="{{config.url_prefix}}/admin/regenerate">
-      <label for="gen_list">Available content generators:</label><br />
-      <select multiple="true" id="gen_list" name="generators">
-          {% for gen in generators %}
-          <option selected="true">{{gen}}</option>
-          {% endfor %}
-      </select><br />
-      <input type="submit" value="Regenerate" />
+      <input type="submit" value="Regenerate All Content" />
     </form>
 </div>
 {% endblock %}

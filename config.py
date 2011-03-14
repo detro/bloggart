@@ -146,6 +146,11 @@ hubbub_hub_url = 'http://pubsubhubbub.appspot.com/'
 # see: http://www.google.com/support/webmasters/bin/answer.py?hl=en&answer=34609 for more information
 google_sitemap_ping = True
 
+# Content in Bloggart is generated using App Engine Deferred Task API
+# For website with a lot of content, is preferable to generate the sitemap with a delay, to
+# ensure that the rest of the content is ready, before the 'sitemap.xml' is generated
+sitemap_generation_delay_sec = 900 # 15min
+
 # If you want to use Google Site verification, go to
 # https://www.google.com/webmasters/tools/ , add your site, choose the 'upload
 # an html file' method, then set the NAME of the file below.
@@ -165,10 +170,6 @@ highlighting_style = 'emacs'
 # Absolute url of the blog application use '/blog' for host/blog/
 # and '' for host/.Also remember to change app.yaml accordingly
 url_prefix = ''
-
-# Defines where the user is defined in the rel="me" of your pages.
-# This allows you to expand on your social graph.
-rel_me = "me personal blog"
 
 # For use a feed proxy like feedburner.google.com
 feed_proxy = "http://feeds.feedburner.com/BlogIvanDeMarino"

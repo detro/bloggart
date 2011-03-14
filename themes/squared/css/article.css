@@ -23,6 +23,15 @@ article header h1 a:hover {
     margin-left: -5px;
 }
 
+article header span.breadcrumb {
+    border-left: 10px solid #a22;
+    font-size: 14px;
+    padding-left: 15px;
+    color: #ddd;
+    margin: 5px 0;
+    display: block;
+}
+
 article ul.meta {
     list-style-position: inside;
     list-style-type: none;

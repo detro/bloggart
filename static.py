@@ -18,10 +18,19 @@ import utils
 
 HTTP_DATE_FMT = "%a, %d %b %Y %H:%M:%S GMT"
 
-TYPE_POST = 0x0001; # 'Post'
-TYPE_PAGE = 0x0002; # 'Page'
-TYPE_INDEX = 0x0004; # 'Index' (i.e. Listing, Pagination, Tag, Archive)
-TYPE_OTHER = 0x0008; # 'Other' (i.e. atom feed, robots.txt, ...)
+TYPE_HOME = 0x0001 # 'Homepage'
+TYPE_POST = 0x0002 # 'Post'
+TYPE_PAGE = 0x0004 # 'Page'
+TYPE_INDEX = 0x008 # 'Index' (i.e. Listing, Pagination, Tag, Archive, Search)
+TYPE_OTHER = 0x0010 # 'Other' (i.e. atom feed, robots.txt, ...)
+
+SITEMAP_DATA_MAPPING = {
+   TYPE_HOME : { "priority" : 1, "changefreq" : "daily" },
+   TYPE_POST : { "priority" : 0.8, "changefreq" : "weekly" },
+   TYPE_PAGE : { "priority" : 0.7, "changefreq" : "monthly" },
+   TYPE_INDEX : { "priority" : 0.3, "changefreq" : "weekly" },
+   TYPE_OTHER : { "priority" : 0.3, "changefreq" : "yearly" }
+}
 
 if config.google_site_verification is not None:
     ROOT_ONLY_FILES = ['/robots.txt','/' + config.google_site_verification]
@@ -40,7 +49,7 @@ class StaticContent(db.Model):
   etag = aetycoon.DerivedProperty(lambda x: hashlib.sha1(x.body).hexdigest());
   indexed = db.BooleanProperty(required=True, default=True);
   headers = db.StringListProperty();
-  type = db.IntegerProperty(choices=(TYPE_POST, TYPE_PAGE, TYPE_INDEX, TYPE_OTHER), default=TYPE_POST);
+  type = db.IntegerProperty(choices=(TYPE_HOME, TYPE_POST, TYPE_PAGE, TYPE_INDEX, TYPE_OTHER), default=TYPE_POST);
 
 
 def get(path):
@@ -65,7 +74,8 @@ def get(path):
   return entity
 
 
-def set(path, body, content_type, indexed=True, type=TYPE_POST, **kwargs):
+def set(path, body, content_type, last_modified=None, indexed=True, type=TYPE_POST, **kwargs):
+  import static
   """Sets the StaticContent for the provided path.
 
   Args:
@@ -78,9 +88,10 @@ def set(path, body, content_type, indexed=True, type=TYPE_POST, **kwargs):
   Returns:
     A StaticContent object.
   """
-  now = datetime.datetime.now(utils.tzinfo()).replace(second=0, microsecond=0)
+  if last_modified is None:
+    last_modified = datetime.datetime.now(utils.tzinfo()).replace(second=0, microsecond=0)
   defaults = {
-    "last_modified": now,
+    "last_modified": last_modified,
   }
   defaults.update(kwargs)
   content = StaticContent(
@@ -88,20 +99,28 @@ def set(path, body, content_type, indexed=True, type=TYPE_POST, **kwargs):
       body = body,
       content_type = content_type,
       indexed = indexed,
-      type = type,
+      type = static.TYPE_HOME if path == '/' else type,
       **defaults);
   content.put()
   memcache.replace(path, db.model_to_protobuf(content).Encode())
+
+  if indexed:
+    regenerate_sitemap()
+
+  return content
+
+def regenerate_sitemap():
   try:
-    eta = now.replace(second=0, microsecond=0) + datetime.timedelta(seconds=65)
-    if indexed:
-      deferred.defer(
-          utils._regenerate_sitemap,
-          _name='sitemap-%s' % (now.strftime('%Y%m%d%H%M'),),
-          _eta=eta)
+    now = datetime.datetime.now(utils.tzinfo()).replace(second=0, microsecond=0)
+    eta = now.replace(second=0, microsecond=0) + datetime.timedelta(seconds=config.sitemap_generation_delay_sec)
+
+    # Queue a Deferred Task to regenerate the 'sitemap.xml', in 5 minutes from now
+    deferred.defer(
+        utils._regenerate_sitemap,
+        _name='sitemap-%s' % (now.strftime('%Y%m%d%H'),), # Run max 1 per hour
+        _eta=eta)
   except (taskqueue.TaskAlreadyExistsError, taskqueue.TombstonedTaskError), e:
     pass
-  return content
 
 def add(path, body, content_type, indexed=True, **kwargs):
   """Adds a new StaticContent and returns it.

@@ -11,7 +11,6 @@
     <title>{% block title %}{{config.blog_name}}{% endblock %}</title>
     <meta name="description" content="{{config.blog_name}} - {{config.slogan}}">
     <meta name="author" content="{{config.author_name}}">
-    {% if config.rel_me %}<link rel="me" href="{{config.rel_me}}" />{% endif %}
 
     <link rel="alternate" type="application/atom+xml" 
         href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}" />
@@ -67,9 +66,10 @@
         
         <span id="links">
             <ul>
-                <li class="text">me @</li>                
+                <li class="text">me</li>
+				<li class="text">@</li>                
                 {% for account in config.external_accounts %}
-                <li><a href="{{ account.url }}" target="_blank">{{ account.service }}</a></li>
+                <li><a rel="me" href="{{ account.url }}" target="_blank">{{ account.service }}</a></li>
                 {% endfor %}
             </ul>
         </span><!-- end of #links -->
@@ -78,28 +78,34 @@
     <div id="container">
         {% block body %}{% endblock %}
     </div> <!-- end of #container -->
-  
-    <footer id="bottomfooter">
-        <div id="leftfoot">
-            License: <em><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">C.C. Attribution-ShareAlike 3.0</a></em>
-            <br />
-            Powered by: <em><a href="https://github.com/detro/bloggart">Ivan De Marino's Bloggart</a></em>
-            <br />
-            Theme: <em>"Squared" <a href="https://blog.ivandemarino.me/">Ivan De Marino</a></em>
-        </div>
-        <div id="rightfoot">
-            <div id="slogan" class="serif">&laquo;{{ config.slogan }}&raquo;</div>
-            <br />
-            <br />
-            <a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}">Atom</a>
-            |
-            <a href="{{ config.url_prefix }}/admin/">Admin</a>
-        </div>
-        <div id="centerfoot">A blog by: <em>{{ config.author_name }}</em></div>
-    </footer><!-- end of #bottomfooter -->
 
-    <script src="{{ config.url_prefix }}/js/base.js"></script>  
-  
+	<footer id="bottomfooter" class="fancy">
+		&laquo; {{ config.slogan }} &raquo;
+	</footer>
+
+	<footer id="credits" class="fancy">
+		Hosted by <a href="http://code.google.com/appengine/" target="_blank">App Engine</a> &amp;
+        Powered by <a href="https://github.com/detro/bloggart" target="_blank">detro's Bloggart fork</a> &amp;
+        Themed by <a href="http://blog.ivandemarino.me/Projects/Squared" target="_blank">Squared</a> &amp;
+        Licensed by <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC ASA 3.0</a>
+		<br />
+		<a href="http://www.w3.org/html/logo/" alt="HTML5 Powered with CSS3 / Styling, and Semantics" target="_blank">
+			<img src="/static/{{ config.theme }}/html5_semantics.png" title="HTML5 Semantics" />
+			<img src="/static/{{ config.theme }}/html5_logo.png" title="HTML5" />
+			<img src="/static/{{ config.theme }}/html5_styling.png" title="HTML5 CSS3 / Styling" />
+		</a>
+		<br />
+		<a href="{{ config.url_prefix }}/">Home</a>
+		&sim;
+		<a href="{{ config.url_prefix }}/archive/">Archive</a>
+        &sim;
+		<a href="{% if config.feed_proxy %}{{ config.feed_proxy }}{% else %}{{ config.url_prefix }}/feeds/atom.xml{% endif %}">Atom</a>
+        &sim;
+        <a href="{{ config.url_prefix }}/admin/">Admin</a>
+	</footer><!-- end of footer#credits -->
+
+    <script src="{{ config.url_prefix }}/js/base.js"></script>
+
     <!--[if lt IE 7 ]>
     <script src="{{ config.url_prefix }}/js/lib/dd_belatedpng.js"></script>
     <script> DD_belatedPNG.fix('img, .png_bg'); </script>

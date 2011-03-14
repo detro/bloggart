@@ -1,6 +1,7 @@
 import os
 import re
 import unicodedata
+from datetime import datetime
 
 from google.appengine.api import memcache
 from google.appengine.ext import webapp
@@ -48,7 +49,7 @@ def format_post_path(post, num):
       'slug': slug,
       'year': date.year,
       'month': date.month,
-      'day': date.day,
+      'day': date.day
   }
 
 
@@ -78,33 +79,38 @@ def render_template(template_name, template_vals=None, theme=None):
   return rendered
 
 
-def _get_all_paths():
+def _get_all_static_content_data():
   import static
   keys = []
-  q = static.StaticContent.all(keys_only=True).filter('indexed', True)
+  q = static.StaticContent.all().filter('indexed', True).order('__key__')
   cur = q.fetch(1000)
   while len(cur) == 1000:
     keys.extend(cur)
-    q = static.StaticContent.all(keys_only=True)
+    q = static.StaticContent.all()
     q.filter('indexed', True)
     q.filter('__key__ >', cur[-1])
+    q.order('__key__')
     cur = q.fetch(1000)
   keys.extend(cur)
-  return [x.name() for x in keys]
+  return [{ "loc" : k.key().name(),
+           "lastmod" : k.last_modified.strftime("%Y-%m-%dT%H:%M:%S%z"),
+           "priority" : static.SITEMAP_DATA_MAPPING[k.type]["priority"],
+           "changefreq" : static.SITEMAP_DATA_MAPPING[k.type]["changefreq"]} for k in keys]
 
 
 def _regenerate_sitemap():
   import static
   import gzip
   from StringIO import StringIO
-  paths = _get_all_paths()
-  rendered = render_template('sitemap.xml', {'paths': paths})
-  static.set('/sitemap.xml', rendered, 'application/xml', False, type=static.TYPE_OTHER)
+  
+  static_contents = _get_all_static_content_data()
+  rendered = render_template('sitemap.xml', {'static_contents': static_contents})
+  static.set('/sitemap.xml', rendered, 'application/xml', indexed=False, type=static.TYPE_OTHER)
   s = StringIO()
   gzip.GzipFile(fileobj=s,mode='wb').write(rendered)
   s.seek(0)
   renderedgz = s.read()
-  static.set('/sitemap.xml.gz',renderedgz, 'application/x-gzip', False, type=static.TYPE_OTHER)
+  static.set('/sitemap.xml.gz',renderedgz, 'application/x-gzip', indexed=False, type=static.TYPE_OTHER)
   # Ping Google only if configured to do so and NOT on localhost
   if ( config.google_sitemap_ping and not (config.host.find("localhost") > -1) ):
     ping_googlesitemap();

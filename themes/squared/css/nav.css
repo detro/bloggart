@@ -68,6 +68,10 @@ nav#topnavbar span#links ul li a,
 nav#topnavbar span#links ul li.text {
   display: inline-block;
   height: 28px;
+  padding: 12px 5px 0 5px;
+}
+
+nav#topnavbar span#internallinks ul li a {
   padding: 12px 10px 0 10px;
 }
 
@@ -95,23 +99,23 @@ nav#topnavbar span.leftseparator {
    border-left: 1px solid #ddd;   
 }
 
-/* --------------------------------- div#bottomnavigation */
-div#bottomnavigation {
-   margin: 40px -50px 0 -50px;
+/* --------------------------------- div.pagination */
+div.pagination {
+   margin: 20px -50px 0 -50px;
 }
 
-div#bottomnavigation span {
+div.pagination span {
    font-size: 16px;
    height: 24px;
 }
 
-div#bottomnavigation span#olderlink {
+div.pagination span.prevlink {
    background: transparent url('/static/{{ config.theme }}/icons/back.png') center left no-repeat;
    padding: 10px 0 0 22px;
    float: left;
 }
 
-div#bottomnavigation span#newerlink {
+div.pagination span.nextlink {
    background: transparent url('/static/{{ config.theme }}/icons/forward.png') center right no-repeat;
    padding: 10px 22px 0 0;
    float: right;
