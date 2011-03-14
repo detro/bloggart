@@ -39,8 +39,8 @@ class ContentRegenerator(object):
               try:
                 # (try to) regenerate dependency
                 generator_class.generate_resource(None, dep)
-              except Exception as e:
-                logging.error("Dependency regeneration failed: " + e)
+              except:
+                logging.error("Regeneration failed for dependency: ")
                 logging.error(dep)
                 
               # Remember not to process this dependency again              
