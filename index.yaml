@@ -8,20 +8,6 @@ indexes:
 
 - kind: BlogPost
   properties:
-  - name: __key__
-  
-- kind: BlogPost
-  properties:
-  - name: published
-    direction: asc
-
-- kind: BlogPost
-  properties:
-  - name: published
-    direction: desc
-
-- kind: BlogPost
-  properties:
   - name: normalized_tags
   - name: published
     direction: desc
