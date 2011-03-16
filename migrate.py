@@ -277,7 +277,11 @@ class WordpressMigration(BaseMigration):
     else:
       post['published'] = self._parse_date(self._get_text(node, 'post_date',
                                                        ns=self.ns_wordpress))
-      post['path'] = self._get_text(node, 'link')[len(channel_link):] or None
+      post_wp_path = self._get_text(node, 'link')[len(channel_link):] or None
+      post_wp_path = post_wp_path.replace("?", "")
+      post_wp_path = post_wp_path.replace("=", "/")
+      post['path'] = post_wp_path
+
     post['title'] = self._get_text(node, 'title') or None
     post['body'] = self._expand_wp_tags(
       self._get_text(node, 'encoded',
@@ -341,6 +345,5 @@ class WordpressMigration(BaseMigration):
       deferred.defer(self.migrate_all, batch_size, items[batch_size:])
     else:
       logging.warn("Migration finished; starting rebuild.")
-      regen = post_deploy.PostRegenerator()
+      regen = post_deploy.ContentRegenerator()
       deferred.defer(regen.regenerate)
-

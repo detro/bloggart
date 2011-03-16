@@ -4,15 +4,18 @@ import getpass
 import os
 import sys
 
-# Bloggart is currently based on Django 0.96
-from google.appengine.dist import use_library
-use_library('django', '0.96')
+#To run this script, from the application root folder (where migrate.py is located):
+#python script/remote.py
 
 ## Application specific
-SDK_DIR = '/usr/local/google_appengine'
-APP_DIR = '/home/aht/src/bloggart'
-APPID = 'bloggart-demo'
-EMAIL = 'my.email@host.dom'
+#make sure the variables below are correct.
+SDK_DIR = '/home/your_username/google_appengine'
+APP_DIR = '/home/your_username/git/bloggart'
+APPID = 'bloggart_GAE_app_ID'
+EMAIL = 'your_email@example.com'
+
+print "Your SDK folder is "+SDK_DIR;
+print "If this is incorrect, edit remote.py to reflect the correct path!"
 
 REMOTE_API_PATH = '/remote_api'
 
@@ -23,11 +26,16 @@ EXTRA_PATHS = [
 	os.path.join(SDK_DIR, 'lib', 'antlr3'),
 	os.path.join(SDK_DIR, 'lib', 'django'),
 	os.path.join(SDK_DIR, 'lib', 'webob'),
+	os.path.join(SDK_DIR, 'lib', 'fancy_urllib'),
 	os.path.join(SDK_DIR, 'lib', 'yaml', 'lib'),
 	APP_DIR,
 	os.path.join(APP_DIR, 'lib'),
 ]
 sys.path = EXTRA_PATHS + sys.path
+
+# Bloggart is currently based on Django 0.96
+from google.appengine.dist import use_library
+use_library('django', '0.96')
 
 from google.appengine.ext.remote_api import remote_api_stub
 
