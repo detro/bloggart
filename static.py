@@ -74,7 +74,7 @@ def get(path):
   return entity
 
 
-def set(path, body, content_type, last_modified=None, indexed=True, type=TYPE_POST, **kwargs):
+def set(path, body, content_type, indexed=True, last_modified=None, type=TYPE_POST, **kwargs):
   import static
   """Sets the StaticContent for the provided path.
 
@@ -133,7 +133,7 @@ def add(path, body, content_type, indexed=True, **kwargs):
   def _tx():
     if StaticContent.get_by_key_name(path):
       return None
-    return set(path, body, content_type, indexed, **kwargs)
+    return set(path, body, content_type, indexed=indexed, **kwargs)
   return db.run_in_transaction(_tx)
 
 def remove(path):

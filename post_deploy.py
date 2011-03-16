@@ -36,12 +36,8 @@ class ContentRegenerator(object):
           for dep in deps:
             # If the current dependency was not processed before
             if (generator_class.__name__, dep) not in self.processed:
-              try:
-                # (try to) regenerate dependency
-                generator_class.generate_resource(None, dep)
-              except:
-                logging.error("Regeneration failed for dependency: ")
-                logging.error(dep)
+              # Regenerate dependency
+              deferred.defer(generator_class.generate_resource, None, dep)
                 
               # Remember not to process this dependency again              
               self.processed.add((generator_class.__name__, dep))
