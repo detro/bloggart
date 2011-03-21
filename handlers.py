@@ -137,15 +137,22 @@ class PostHandler(BaseHandler):
                     initial={'draft': post and post.published is None})
     if form.is_valid():
       post = form.save(commit=False)
-      if form.clean_data['draft']: # Draft post
+      if form.clean_data['draft']:
+        # Post is marked as DRAFT
         post.published = datetime.datetime.max
         post.put()
       else:
-        if not post.path: # Publish post
+        # Post is NOT marked as DRAFT - hence, PUBLISH
+        if not post.path:
+          # Just published
           post.updated = post.published = datetime.datetime.now(utils.tzinfo())
-        else: # Edit post
+        else:
+          # Edited
           post.updated = datetime.datetime.now(utils.tzinfo())
+
+        post.put()
         post.publish()
+
       self.render_to_response("published.html", {
           'content': post,
           'type' : 'post',
@@ -202,15 +209,21 @@ class PageHandler(BaseHandler):
           page.put();
           break;
       
-      if form.clean_data['draft']: # Draft page
-        page.published = datetime.datetime.max;
+      if form.clean_data['draft']:
+        # Page is marked as DRAFT
+        page.published = datetime.datetime.max
         page.put();
       else:
-        if not page.path: # Publish page
-          page.updated = page.published = datetime.datetime.now(utils.tzinfo());
-        else: # Edit post
-          page.updated = datetime.datetime.now(utils.tzinfo());
-        page.publish();
+        # Page is NOT marked as DRAFT - hence, PUBLISH
+        if not page.path:
+          # Just published
+          page.updated = page.published = datetime.datetime.now(utils.tzinfo())
+        else:
+          # Edited
+          page.updated = datetime.datetime.now(utils.tzinfo())
+
+        page.put()
+        page.publish()
       self.render_to_response("published.html", {'content': page, 'type' : 'page', 'draft': form.clean_data['draft']});
     else:
       self.render_form(form);
