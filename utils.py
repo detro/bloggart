@@ -158,7 +158,10 @@ def tz_field(property):
     # delay importing, hopefully after fix_path is done
     from timezones.utc import UTC
 
-    return property.replace(tzinfo=UTC()).astimezone(tz)
+    try:
+      return property.replace(tzinfo=UTC()).astimezone(tz)
+    except:
+      return property
   else:
     return property
 
