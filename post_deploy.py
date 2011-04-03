@@ -2,7 +2,7 @@ import datetime
 import os
 import logging
 
-from google.appengine.api.labs import taskqueue
+from google.appengine.api import taskqueue
 from google.appengine.ext import deferred
 from google.appengine.runtime import DeadlineExceededError
 
