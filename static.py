@@ -150,6 +150,10 @@ def remove(path):
     content.delete()
   return db.run_in_transaction(_tx)
 
+"""
+	This function is a wrapper to "get", and redirects the client if it does not come from the correct HOST
+	I see no reason to use this fucntion.
+"""
 def canonical_redirect(func):
   def _dec(self, path):
     if not self.request.host == config.host:
@@ -176,7 +180,8 @@ class StaticContentHandler(webapp.RequestHandler):
     else:
       self.response.set_status(304)
 
-  @canonical_redirect
+  #@canonical_redirect
+  #I see no reason to decorate "get" with "canonical_redirect"
   def get(self, path):
     if not path.startswith(config.url_prefix):
       if path not in ROOT_ONLY_FILES:

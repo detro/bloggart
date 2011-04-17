@@ -38,14 +38,13 @@
             <ul>
                 <li>
                     <!-- Twitter Tweet Button: http://twitter.com/goodies/tweetbutton -->
-                    <a href="http://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="detronizator">Tweet</a>
+                    <a href="http://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="{{config.blog_name}}">Tweet</a>
                     <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
                 </li>
                 <li>
                     <!-- Facebook Share Button: http://www.facebook.com/share/ -->
-                    <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fpage%2Fto%2Flike&amp;layout=box_count&amp;show_faces=true&amp;width=55&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=62"
-                        scrolling="no" frameborder="0"
-                        style="border:none; overflow:hidden; width:55px; height:62px;" allowTransparency="true"></iframe>
+					<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2F{{ config.host|escape }}{{ config.url_prefix|escape }}{{ post.path|escape }}&amp;layout=box_count&amp;show_faces=false&amp;width=100&amp;action=recommend&amp;font=arial&amp;colorscheme=light&amp;height=65" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:65px;" allowTransparency="true">
+					</iframe>
                 </li>
                 <li>
                     <!-- Google Buzz Button: http://www.google.com/buzz/api/admin/configPostWidget -->
