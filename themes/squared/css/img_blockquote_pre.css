@@ -2,7 +2,7 @@
 div.img {
    margin: 20px 0;
    text-align: center;
-   font-size: 16px;
+   font-size: 18px;
    color: #611;
    font-style: italic;
 }
@@ -45,8 +45,12 @@ blockquote {
    margin: 10px 0;
 }
 
+table.highlighttable {
+    margin: 20px 0;
+}
+
 div.linenodiv pre, div.highlight pre {
-    font-size: 11px;
+    font-size: 13px;
     margin: 0;
     white-space: pre;
     font-family: 'Monaco', 'Courier New', 'Courier', monospace;
@@ -55,7 +59,7 @@ div.linenodiv pre, div.highlight pre {
 div.linenodiv pre {
     width: 30px;
     text-align: right;
-	padding: 3px 5px 3px 0;
+    padding: 3px 5px 3px 0;
 }
 
 div.highlight pre {   

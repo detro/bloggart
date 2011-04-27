@@ -26,10 +26,9 @@ body, nav#topnavbar, footer#bottomfooter {
 }
 
 h1, h2, h3, h4, h5 {
-	font-variant: small-caps;
-    color: #611;
+  color: #611;
 	text-shadow: 0px 1px 2px #888;
-	margin: 20px 0;
+	margin: 30px 0;
 }
 
 h1 { font-size: 32px; }
@@ -67,6 +66,8 @@ div#container {
 div#main {
    font-size: 20px;
 }
+
+pre, code, kbd, samp { font-family: 90%; }
 
 /* --------------------------------- footer */
 footer#bottomfooter {
