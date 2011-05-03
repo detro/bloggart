@@ -38,7 +38,7 @@
             <ul>
                 <li>
                     <!-- Twitter Tweet Button: http://twitter.com/goodies/tweetbutton -->
-                    <a href="http://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="{{config.blog_name}}">Tweet</a>
+                    <a href="http://twitter.com/share" class="twitter-share-button" data-count="vertical" {% if config.twitter_id %}data-via="{{ config.twitter_id }}"{% endif %}>Tweet</a>
                     <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
                 </li>
                 <li>

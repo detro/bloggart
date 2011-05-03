@@ -68,8 +68,10 @@
             <ul>
                 <li class="text">me</li>
 				<li class="text">@</li>                
-                {% for account in config.external_accounts %}
-                <li><a rel="me" href="{{ account.url }}" target="_blank">{{ account.service }}</a></li>
+                {% for links in config.sidebar_links %}
+                    {% for link in links.1 %}
+                        <li><a rel="{{ link.rel }}" href="{{ link.url }}" target="{{ link.target }}">{{ link.title }}</a></li>
+                    {% endfor %}
                 {% endfor %}
             </ul>
         </span><!-- end of #links -->
