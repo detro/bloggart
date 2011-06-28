@@ -47,6 +47,11 @@ blockquote {
 
 table.highlighttable {
     margin: 20px 0;
+    width: 100%;
+}
+
+table.highlighttable td.code {
+    width: 100%;
 }
 
 div.linenodiv pre, div.highlight pre {
