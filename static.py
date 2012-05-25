@@ -1,3 +1,9 @@
+# Bloggart is currently based on Django 0.96
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+from google.appengine.dist import use_library
+use_library('django', '0.96')
+
 import datetime
 import hashlib
 
@@ -18,11 +24,11 @@ import utils
 
 HTTP_DATE_FMT = "%a, %d %b %Y %H:%M:%S GMT"
 
-TYPE_HOME = 0x0001 # 'Homepage'
-TYPE_POST = 0x0002 # 'Post'
-TYPE_PAGE = 0x0004 # 'Page'
-TYPE_INDEX = 0x008 # 'Index' (i.e. Listing, Pagination, Tag, Archive, Search)
-TYPE_OTHER = 0x0010 # 'Other' (i.e. atom feed, robots.txt, ...)
+TYPE_HOME = 0x0001    # 'Homepage'
+TYPE_POST = 0x0002    # 'Post'
+TYPE_PAGE = 0x0004    # 'Page'
+TYPE_INDEX = 0x008    # 'Index' (i.e. Listing, Pagination, Tag, Archive, Search)
+TYPE_OTHER = 0x0010   # 'Other' (i.e. atom feed, robots.txt, ...)
 
 SITEMAP_DATA_MAPPING = {
    TYPE_HOME : { "priority" : 1, "changefreq" : "daily" },
@@ -61,9 +67,9 @@ def get(path):
     A StaticContent object, or None if no content exists for this path.
   """
   entity = None;
-  if ( config.memcaching ): 
+  if ( config.memcaching ):
     entity = memcache.get(path);
-    
+
   if entity:
     entity = db.model_from_protobuf(entity_pb.EntityProto(entity))
   else:
@@ -164,7 +170,7 @@ def canonical_redirect(func):
 
 class StaticContentHandler(webapp.RequestHandler):
   PAGE_NOT_FOUND_404_PATH = "404.html";
-  
+
   def output_content(self, content, serve=True):
     if content.content_type:
       self.response.headers['Content-Type'] = content.content_type

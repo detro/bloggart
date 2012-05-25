@@ -10,6 +10,8 @@ from google.appengine.ext import db
 from google.appengine.ext import deferred
 
 # Bloggart is currently based on Django 0.96
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from google.appengine.dist import use_library
 use_library('django', '0.96')
 from django.utils import simplejson
@@ -40,7 +42,7 @@ def disqus_request(method, request_type=urlfetch.GET, **kwargs):
   if not result['succeeded']:
     raise Exception("RPC did not succeed", result)
   return result
-  
+
 
 class BaseMigration(object):
 
@@ -130,7 +132,7 @@ class BloogBreakingMigration(BaseMigration):
         deps={})
     post.put()
     deferred.defer(self.migrate_all_comments, article.key(), article.title)
-  
+
   def migrate_all(self, batch_size=20, start_key=None):
     q = BloogBreakingMigration.Article.all()
     if start_key:
