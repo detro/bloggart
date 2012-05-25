@@ -150,7 +150,7 @@ class BloogBreakingMigration(BaseMigration):
 
 class WordpressMigration(BaseMigration):
 
-  ns_wordpress = 'http://wordpress.org/export/1.0/'
+  ns_wordpress = 'http://wordpress.org/export/1.1/'
   ns_rss = 'http://purl.org/rss/1.0/modules/content/'
 
   def __init__(self, export_file, disqus_user_key, disqus_forum_name):
