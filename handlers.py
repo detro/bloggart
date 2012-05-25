@@ -13,6 +13,8 @@ import utils
 from generators import generator_list
 
 # Bloggart is currently based on Django 0.96
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from google.appengine.dist import use_library
 use_library('django', '0.96')
 from django import newforms as forms
@@ -28,7 +30,7 @@ class PostForm(djangoforms.ModelForm):
   class Meta:
     model = models.BlogPost
     fields = [ 'title', 'body', 'tags' ]
-    
+
 
 class PageForm(djangoforms.ModelForm):
   # Overridden constructor to initialise the Form properly
@@ -37,10 +39,10 @@ class PageForm(djangoforms.ModelForm):
     if ( current_page ):
       # Show all the pages, except the one associated with the current form instance
       self.base_fields['parent_page'].query.filter("__key__ != ", current_page.key());
-        
+
     self.base_fields['parent_page'].widget.choices = self.base_fields['parent_page'].choices;
     super(PageForm, self).__init__(*args, **kwargs);
-  
+
   title = forms.CharField( widget=forms.TextInput( attrs={'id':'name'} ));
   parent_page = djangoforms.ModelChoiceField( models.Page, None, required=False, initial=None, empty_label="none" );
   body = forms.CharField( widget=forms.Textarea( attrs={'id':'message', 'rows': 10, 'cols': 20} ));
@@ -61,7 +63,7 @@ def with_post(fun):
         return
     fun(self, post)
   return decorate
-  
+
 
 def with_page(fun):
   def decorate(self, page_id=None):
@@ -93,7 +95,7 @@ class AdminHandler(BaseHandler):
   def get(self):
     # Entry per page
     entry_per_page = 10
-    
+
     posts_offset = int(self.request.get('posts_start', 0));
     posts_count = int(self.request.get('posts_count', entry_per_page));
     posts = models.BlogPost.all().order('-published').fetch(posts_count, posts_offset);
@@ -200,7 +202,7 @@ class PageHandler(BaseHandler):
     form = PageForm(current_page=page, data=self.request.POST, instance=page, initial={'draft': page and page.published is None});
     if form.is_valid():
       page = form.save(commit=False);
-      
+
       # Ensure that a 'Child Page' is never assigned as 'Parent Page' as well
       page.put();
       for p in page.child_pages:
@@ -208,7 +210,7 @@ class PageHandler(BaseHandler):
           page.parent_page = None;
           page.put();
           break;
-      
+
       if form.clean_data['draft']:
         # Page is marked as DRAFT
         page.published = datetime.datetime.max
@@ -253,9 +255,9 @@ class RegenerateHandler(BaseHandler):
   def post(self):
     # Force the regeneration of all the content
     post_deploy.regenerate_all(force=True)
-    
+
     # Post-Deploy tasks (i.e. regenerate static pages)
     deferred.defer(post_deploy.try_post_deploy, force=True);
 
-    # Render a "regenerating" page 
+    # Render a "regenerating" page
     self.render_to_response("regenerating.html")

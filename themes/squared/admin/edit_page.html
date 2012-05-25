@@ -3,6 +3,14 @@
 
 {% block body %}
 <div id="main">
+<script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>
+<script type="text/javascript"> 
+//<![CDATA[
+bkLib.onDomLoaded(function() {
+        new nicEditor({fullPanel : true}).panelInstance('message');
+  });
+  //]]>
+  </script> 
     <h1>{% if form.instance %}Edit{% else %}New{% endif %} Page</h1>
     <form method="post" action="">
         <table id="form">

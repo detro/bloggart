@@ -8,6 +8,8 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.template import _swap_settings
 
 # Bloggart is currently based on Django 0.96
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 from google.appengine.dist import use_library
 use_library('django', '0.96')
 import django.conf
@@ -55,10 +57,10 @@ def format_post_path(post, num):
 
 def get_template_vals_defaults(template_vals=None):
     import models;
-    
+
     if template_vals is None:
         template_vals = {}
-    
+
     template_vals.update({
         'config': config,
         'devel': os.environ['SERVER_SOFTWARE'].startswith('Devel'),
@@ -102,7 +104,7 @@ def _regenerate_sitemap():
   import static
   import gzip
   from StringIO import StringIO
-  
+
   static_contents = _get_all_static_content_data()
   rendered = render_template('sitemap.xml', {'static_contents': static_contents})
   static.set('/sitemap.xml', rendered, 'application/xml', indexed=False, type=static.TYPE_OTHER)
@@ -179,7 +181,7 @@ class memoize_content(object):
         data = None;
         if ( config.memcaching ):
           data = memcache.get(content.path, namespace=self.namespace);
-          
+
         if data:
           return data
         else:
@@ -209,7 +211,7 @@ def clear_post_memoizer_cache(post):
     post_summary_memoizer.delete(post);
     post_hash_memoizer.delete(post);
     post_summary_hash_memoizer.delete(post);
-  
+
 def clear_page_memoizer_cache(page):
     page_body_memoizer.delete(page);
     page_hash_memoizer.delete(page);
