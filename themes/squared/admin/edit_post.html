@@ -3,31 +3,10 @@
 
 {% block body %}
 <div id="main">
-<script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>
-<script type="text/javascript">
-//<![CDATA[
-var richEditor = null;
-
-function toggleRichEditor() {
-    if(!richEditor) {
-        richEditor = new nicEditor({fullPanel : true}).panelInstance('message');
-    } else {
-        richEditor.removeInstance('message');
-        richEditor = null;
-    }
-}
-
-bkLib.onDomLoaded(toggleRichEditor);
-//]]>
-</script>
     <h1>{% if form.instance %}Edit{% else %}New{% endif %} Post</h1>
     <form method="post" action="">
         <table id="form">
             {{form}}
-            <tr>
-                <th>Rich editor</th>
-                <td><button onclick="toggleRichEditor(); return false;">Toggle</button></td>
-            </tr>
             <tr>
                 <th class="transparent">&nbsp;</th>
                 <td><input type="submit" value="Save Post" /></td>
