@@ -31,11 +31,11 @@ TYPE_INDEX = 0x008    # 'Index' (i.e. Listing, Pagination, Tag, Archive, Search)
 TYPE_OTHER = 0x0010   # 'Other' (i.e. atom feed, robots.txt, ...)
 
 SITEMAP_DATA_MAPPING = {
-   TYPE_HOME : { "priority" : 1, "changefreq" : "daily" },
-   TYPE_POST : { "priority" : 0.8, "changefreq" : "weekly" },
-   TYPE_PAGE : { "priority" : 0.7, "changefreq" : "monthly" },
-   TYPE_INDEX : { "priority" : 0.3, "changefreq" : "weekly" },
-   TYPE_OTHER : { "priority" : 0.3, "changefreq" : "yearly" }
+  TYPE_HOME : { "priority" : 1, "changefreq" : "daily" },
+  TYPE_POST : { "priority" : 0.8, "changefreq" : "weekly" },
+  TYPE_PAGE : { "priority" : 0.7, "changefreq" : "monthly" },
+  TYPE_INDEX : { "priority" : 0.3, "changefreq" : "weekly" },
+  TYPE_OTHER : { "priority" : 0.3, "changefreq" : "yearly" }
 }
 
 if config.google_site_verification is not None:

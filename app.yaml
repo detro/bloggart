@@ -15,7 +15,7 @@ handlers:
   script: empty_favicon.py
 
 - url: /_ah/queue/deferred
-  script: deferred.py 
+  script: deferred.py
   login: admin
 
 - url: /admin/.*
@@ -28,6 +28,9 @@ handlers:
 - url: /static/([^/]+)/(.*)
   static_files: themes/\1/static/\2
   upload: themes/[^/]+/static/.*
+
+- url: /rest/.*
+  script: rest.py
 
 - url: /.*
   script: static.py
