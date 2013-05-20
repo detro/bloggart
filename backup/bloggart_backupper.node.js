@@ -1,51 +1,34 @@
 #!/usr/local/bin/node
 
-var http = require("http"),
-    ordering = "published",
-    offset = 935,
-    pageSize = 1,
-    host = null,
-    basePath = "/rest/",
-    entities = ["post", "page"],
+const MAX_PAGE_SIZE = 50;
+
+var host = null,
+    modelsSavers = null,
     destDir = null,
-    url = null;
+    downloader = null;
 
 require("./console++.js");
 
 if (process.argv.length !== 4) {
-    console.warn(" Usage:\n  %s %s %s", __filename, "BLOG_URL", "DESTINATION_DIR\n");
+    console.log("\nUsage:\n   %s %s %s", __filename, "BLOG_HOSTNAME", "DESTINATION_DIR\n");
     process.exit(1);
+} else {
+    host = process.argv[2];
+    destDir = process.argv[3];
 }
 
-host = process.argv[2];
-destDir = process.argv[3];
+// Configure Model-Savers Map
+modelsSavers = {
+    "post" : require("./content_saver.js").create(destDir + "/posts_archive", ["title"]),
+    "page" : require("./content_saver.js").create(destDir + "/pages_archive", ["title"])
+};
 
-// "http://HOST/rest/post?offset=OFFSET&page_size=PAGE_SIZE&ordering=ORDERING"
-http.get({
-    "host" : host,
-    "port" : 80,
-    "method" : "GET",
-    "path" : basePath + entities[0] +
-        "?ordering=" + ordering +
-        "&offset=" + offset +
-        "&page_size=" + pageSize,
-    "headers" : {
-        "Accept" : "application/json"
-    }
-}, function(res) {
-    var resBody = "";
-
-    console.debug("StatusCode %d", res.statusCode);
-    console.info("Headers %s", JSON.stringify(res.headers, null, "  "));
-    res.on("data", function(chunk) {
-        resBody += chunk;
-    });
-    res.on("end", function() {
-        var resJSON = JSON.parse(resBody);
-        console.warn("Response Body");
-        console.error(JSON.stringify(resJSON, null, "  "));
-    });
-}).on("error", function(e) {
-    console.error(e.message);
+// Configure Downloader
+downloader = require("./content_downloader.js").create(host, MAX_PAGE_SIZE, modelsSavers);
+downloader.onEnd(function() {
+    console.info("ALL DONE!");
+    process.exit();
 });
+
+downloader.start();
 
