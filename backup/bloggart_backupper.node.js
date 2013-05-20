@@ -19,8 +19,19 @@ if (process.argv.length !== 4) {
 
 // Configure Model-Savers Map
 modelsSavers = {
-    "post" : require("./content_saver.js").create(destDir + "/posts_archive", ["title"]),
-    "page" : require("./content_saver.js").create(destDir + "/pages_archive", ["title"])
+    "post" : require("./content_saver.js").create(destDir + "/posts_archive", [
+        "path",     //< convert to "slug" if available
+        "updated",
+        "published",
+        "tags",
+        "title",    //< +body, +body_markup (to extension), +slug (from title - to filename)
+    ]),
+    "page" : require("./content_saver.js").create(destDir + "/pages_archive", [
+        "path",     //< convert to "slug" if available
+        "updated",
+        "published",
+        "title",    //< +body, +body_markup (to extension), +slug (from title - to filename)
+    ])
 };
 
 // Configure Downloader
