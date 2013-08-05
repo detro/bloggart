@@ -25,13 +25,13 @@ modelsSavers = {
         "published",
         "tags",
         "title",    //< +body, +body_markup (to extension), +slug (from title - to filename)
-    ]),
+    ], "post", "detro"),
     "page" : require("./content_saver.js").create(destDir + "/pages_archive", [
         "path",     //< convert to "slug" if available
         "updated",
         "published",
         "title",    //< +body, +body_markup (to extension), +slug (from title - to filename)
-    ])
+    ], "page", "detro")
 };
 
 // Configure Downloader
